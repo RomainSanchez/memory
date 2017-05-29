@@ -1,0 +1,6 @@
+{
+    "debug": true,
+    "applicationName":"LiftJs",
+    "appHostname": "http://LiftJs.local",
+    "clientSessionName": "liftJs",
+}
