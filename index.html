@@ -1,28 +1,13 @@
-<?php
-error_reporting(-1);
-ini_set('display_errors', 1);
-
-require_once 'actions.php';
-
-$app = new App();
-
-$parameters = $app->getParameters();
-
-if (isset($_GET['getParameters'])) {
-    $app->getParametersAction();
-}
-?>
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <meta charset="UTF-8"> 
 
         <link rel="stylesheet" type="text/css" href="css/styles.css">
-        <title><?php echo $parameters->applicationName; ?></title>
+        <title></title>
 
-        <meta http-equiv="Access-Control-Allow-Origin" content="*">
         <meta name="theme-color" content="#455a64">
     </head>
     <body>
@@ -36,7 +21,7 @@ if (isset($_GET['getParameters'])) {
 
             <nav>
                 <div class="nav-wrapper primary">
-                    <a href="/" class="brand-logo"><?php echo $parameters->applicationName; ?></a>
+                    <a href="/" class="brand-logo"></a>
                     <ul id="nav-mobile-left" class="left">
                         <li>
                             <a href='javascript:;' data-go="homeAction">
@@ -162,10 +147,6 @@ if (isset($_GET['getParameters'])) {
 
         <!-- APP -->
 
-        <script>
-            var appHostname = "<?php echo $parameters->appHostname; ?>";
-        </script>
-
         <script type="text/javascript" src="js/app.js"></script>
         <script type="text/javascript" src="js/core/utils.js"></script>
         <script type="text/javascript" src="js/core/ui.js"></script>
@@ -189,7 +170,7 @@ if (isset($_GET['getParameters'])) {
         <!-- TEMPLATES LOADED DIRECTLY -->
 
         <script id="home-template" type="text/x-handlebars-template" src="/views/home.html"></script>
-        <script id="settings-template" type="text/x-handlebars-template" src="/views/user/settings.html"></script>
+        <script id="settings-template" type="text/x-handlebars-template" src="/views/pages/settings.html"></script>
         <script id="infos-template" type="text/x-handlebars-template" src="/views/blocks/infos.html"></script>
 
         <!-- TEMPLATES LOADED VIA AJAX -->

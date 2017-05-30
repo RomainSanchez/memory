@@ -14,10 +14,13 @@ var app = {
 
         app.core.ui.displayContentLoading(true);
 
+        var protocol = location.protocol;
+        var slashes = protocol.concat("//");
+        var host = slashes.concat(window.location.hostname);
+
         // GET APP PARAMETERS
 
-        $.get(appHostname + '/?getParameters=1', function (params) {
-            moment.locale('fr');
+        $.get(host + '/data/parameters.json', function (params) {
             app.config = params;
             app.core.utils.init();
             app.core.events.init();
@@ -37,7 +40,7 @@ var app = {
             app.core.ui.init();
             app.core.ui.displayContentLoading(false);
             app.ctrl.homeAction();
-            
+
         });
     },
 

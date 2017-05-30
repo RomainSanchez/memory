@@ -18,7 +18,7 @@ app.register({
             // -------------------------------------------------------------------------
 
             initEvents: function () {
-                
+
             },
 
             // -------------------------------------------------------------------------
@@ -27,6 +27,8 @@ app.register({
 
             plugins: {
                 init: function () {
+                    moment.locale('fr');
+                    app.core.ui.setApplicationName();
                     app.core.ui.plugins.initTabs();
                     app.core.ui.plugins.initTooltips();
                     app.core.ui.plugins.initDropDown();
@@ -43,30 +45,30 @@ app.register({
                     var tabsId = $('div.tab-content:first-of-type').attr('id');
                     $('ul#tabs').tabs('select_tab', tabsId);
                 },
-                
+
                 // ---------------------------------------------------------------------
                 // MATERIALIZECSS TOOLTIPS
                 // ---------------------------------------------------------------------
-                
+
                 initTooltips: function () {
                     $('.material-tooltip').remove();
                     $('*[data-tooltip]').tooltip({
                         delay: 50
                     });
                 },
-                
+
                 // ---------------------------------------------------------------------
                 // MATERIALIZECSS DROPDOWN
                 // ---------------------------------------------------------------------
-                
+
                 initDropDown: function () {
                     $('.dropdown-button').dropdown();
                 },
-                
+
                 // ---------------------------------------------------------------------
                 // MATERIALIZECSS MODAL
                 // ---------------------------------------------------------------------
-                
+
                 initModal: function () {
                     app.core.ui.modal = $('#confirm-modal');
                     app.core.ui.modal.modal();
@@ -94,11 +96,22 @@ app.register({
                     });
                 }
             },
-            
+
+            // -------------------------------------------------------------------------
+            // SETS APP NAME IN NAVBAR AND PAGE TITLE
+            // -------------------------------------------------------------------------
+
+            setApplicationName: function () {
+                var appName = app.config.applicationName;
+
+                document.title = appName;
+                $('nav .brand-logo').html(appName);
+            },
+
             // -------------------------------------------------------------------------
             // LOOP LOADING HANDLEBARS TEMPLATES
             // -------------------------------------------------------------------------
-            
+
             initTemplates: function () {
                 var promises = [];
 
@@ -153,28 +166,28 @@ app.register({
                     $(document).trigger('app.failed');
                 });
             },
-            
+
             // -------------------------------------------------------------------------
             // APPLY COMPILED TEMPLATE
             // -------------------------------------------------------------------------
-            
+
             applyTemplate: function (name, tpl) {
                 $('handlebar-placeholder[template="' + name + '"]').html(tpl);
                 $(document).trigger('template.applyed', [name]);
             },
-            
+
             // -------------------------------------------------------------------------
             // CLEAR .CONTENT PLACEHOLDERS
             // -------------------------------------------------------------------------
-            
+
             clearContent: function () {
                 $('#app div.content handlebar-placeholder').html('');
             },
-            
+
             // -------------------------------------------------------------------------
             // SHOW LOADER IN TOP OF NAVBAR
             // -------------------------------------------------------------------------
-            
+
             displayLoading: function (show) {
                 if (!isDefined(show))
                     show = true;
@@ -185,11 +198,11 @@ app.register({
                 else
                     loader.addClass('hidden');
             },
-            
+
             // -------------------------------------------------------------------------
             // SHOW BIG LOADER IN CONTENT
             // -------------------------------------------------------------------------
-            
+
             displayContentLoading: function (show) {
                 if (!isDefined(show))
                     show = true;
@@ -200,11 +213,11 @@ app.register({
                 else
                     loader.hide();
             },
-            
+
             // -------------------------------------------------------------------------
             // SHOW TOAST (FLASH MESSAGE)
             // -------------------------------------------------------------------------
-            
+
             toast: function (message, type, delay) {
                 if (!isDefined(delay))
                     delay = 5000;
