@@ -6,6 +6,7 @@ body,
 html {
     min-height: 100%;
     background: $body-bg;
+    color:$primary-color;
 
     #app {
         nav {
@@ -58,17 +59,17 @@ html {
         }
 
         .content {
-            padding:4.1em 0 1em 0;
+            padding:4.1em 1em 1em 1em;
         }
     }
-    
-        .dropdown-content {
+
+    .dropdown-content {
         li {
             &> a{
                 color: $primary-color;
 
                 &:hover, 
-                &:active {
+                    &:active {
                     background-color:$primary-color;
                     color: white;
                 }

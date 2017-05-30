@@ -1,6 +1,6 @@
 # LiftJS
 
-Libre-Informatique Frontend Terminal : JavaScript frontend application
+Libre-Informatique Frontend Tools : JavaScript frontend application
 
 WORK IN PROGRESS
 
