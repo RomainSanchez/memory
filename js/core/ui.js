@@ -5,10 +5,6 @@ app.register({
             // HANDLE APPLICATION TEMPLATES
             templates: {},
 
-            // HANDLE APPLICATION MODALE
-            modal: null,
-
-            // HANDLE APPLICATION MODALE
             init: function () {
                 $(document).trigger('ui.init');
             },
@@ -32,7 +28,6 @@ app.register({
                     app.core.ui.plugins.initTabs();
                     app.core.ui.plugins.initTooltips();
                     app.core.ui.plugins.initDropDown();
-                    app.core.ui.plugins.initModal();
                     app.core.ui.plugins.registerComponentPlugins(app);
                 },
 
@@ -63,15 +58,6 @@ app.register({
 
                 initDropDown: function () {
                     $('.dropdown-button').dropdown();
-                },
-
-                // ---------------------------------------------------------------------
-                // MATERIALIZECSS MODAL
-                // ---------------------------------------------------------------------
-
-                initModal: function () {
-                    app.core.ui.modal = $('#confirm-modal');
-                    app.core.ui.modal.modal();
                 },
 
                 // ---------------------------------------------------------------------
