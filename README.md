@@ -2,11 +2,21 @@
 
 A JavaScript frontend application developped with popular javascript / html / css libraries
 
-[![License](https://img.shields.io/github/license/libre-informatique/LiftJS.svg?style=flat-square)](./LICENCE.md)
-
 ![Application preview](https://github.com/libre-informatique/LiftJS/blob/master/img/preview.png)
 
-## Install DEV env
+[![License](https://img.shields.io/github/license/libre-informatique/LiftJS.svg?style=flat-square)](./LICENCE.md)
+
+## Third party libraries
+
+-   jQuery : https://jquery.com/
+-   MaterializeCss : http://materializecss.com/
+-   Material Icons : https://material.io/icons/
+-   HandlebarsJS : http://handlebarsjs.com/
+-   MomentJS : https://momentjs.com/
+
+## Installation
+
+### DEV env
 
 -   cp data/parameters.json.dist data/parameters.json
 -   edit data/parameters.json with your environments configuration
@@ -15,7 +25,7 @@ A JavaScript frontend application developped with popular javascript / html / cs
 -   open localhost:8000
 -   The window will refresh automatically and sass will be compiled every time you save a file in the project
 
-## Install PROD env
+### PROD env
 
 -   cp data/parameters.json.dist data/parameters.json
 -   edit data/parameters.json with your environments configuration
