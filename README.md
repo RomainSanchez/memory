@@ -1,6 +1,6 @@
-# LiftJS
+# LiftJS : Libre-Informatique Frontend Tool
 
-Libre-Informatique Frontend Tools : JavaScript frontend application
+A JavaScript frontend application developped with popular javascript / html / css libraries
 
 ![Application preview](https://github.com/libre-informatique/LiftJS/blob/master/img/preview.png)
 
