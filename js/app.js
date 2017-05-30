@@ -10,17 +10,23 @@ var app = {
     // INIT APPLICATION AT LOAD TIME
     // -------------------------------------------------------------------------
 
-    init: function () {
+    init: function() {
 
         app.core.ui.displayContentLoading(true);
 
-        var protocol = location.protocol;
-        var slashes = protocol.concat("//");
-        var host = slashes.concat(window.location.hostname);
+        var host = null;
+
+        if (isDefined(app.config.host)) {
+            host = app.config.host;
+        } else {
+            var protocol = location.protocol;
+            var slashes = protocol.concat("//");
+            host = slashes.concat(window.location.hostname);
+        }
 
         // GET APP PARAMETERS
 
-        $.get(host + '/data/parameters.json', function (params) {
+        $.get(host + '/data/parameters.json', function(params) {
             app.config = params;
             app.core.utils.init();
             app.core.events.init();
@@ -29,13 +35,13 @@ var app = {
 
         // SESSION STARTED
 
-        $(document).on('session.started', function () {
+        $(document).on('session.started', function() {
             app.core.ui.initTemplates();
         });
 
         // ALL TEMPLATES LOADED
 
-        $(document).on('templates.registered', function () {
+        $(document).on('templates.registered', function() {
             app.core.ui.applyTemplate('navbar');
             app.core.ui.plugins.init();
             app.core.ui.init();
@@ -46,7 +52,7 @@ var app = {
         });
     },
 
-    ready: function () {
+    ready: function() {
         $(document).trigger('app.ready');
     },
 
@@ -54,7 +60,7 @@ var app = {
     // REGISTER APPLICATION MODULE
     // -------------------------------------------------------------------------
 
-    register: function (component) {
+    register: function(component) {
         $.extend(true, app, component);
         return app;
     }
