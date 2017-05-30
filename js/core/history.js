@@ -52,10 +52,18 @@ app.register({
                         var state = event.originalEvent.state;
                         if (state && !app.core.history.disableBack) {
                             $('#app').html(state.content);
-                            app.core.ui.plugins.init();
-                            $('.dropdown-button').dropdown('close');
+                            $(document).trigger('history.popedstate');
+
                         }
                     });
+
+                $(document)
+                    .on('history.popedstate', function () {
+                        app.core.ui.plugins.init();
+                        $('.dropdown-button').dropdown('close');
+                        app.featureDiscovery.showFeatureDiscovery();
+                    })
+                    ;
             }
         }
     }
