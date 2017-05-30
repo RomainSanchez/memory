@@ -18,13 +18,22 @@
             <handlebar-placeholder template="navbar"></handlebar-placeholder>
 
             <div class="content">
-                
+
                 <!-- IMPORTANT : ALL handlebar-placeholder WILL BE CLEARED WHEN USING app.core.ctrl.go and app.core.ctrl.render(x,y,true) -->
 
                 <!-- CONTENT VIEWS -->
 
                 <handlebar-placeholder template="home"></handlebar-placeholder>
                 <handlebar-placeholder template="settings"></handlebar-placeholder>
+
+                <!-- USER MODULE -->
+
+                <!-- 
+                <handlebar-placeholder template="login"></handlebar-placeholder>
+                <handlebar-placeholder template="profile"></handlebar-placeholder>
+                <handlebar-placeholder template="editPassword"></handlebar-placeholder>
+                <handlebar-placeholder template="editProfile"></handlebar-placeholder>
+                -->
 
                 <!-- CONTENT LOADER -->
 
@@ -90,7 +99,7 @@
         <script src="js/libs/handlebars-v4.0.5.js"></script>
         <script src="js/libs/materialize.min.js"></script>
         <script src="js/libs/moment-with-locales.min.js"></script>
-        
+
         <!-- UNCOMMENT IF YOU WANT TO SUPPORT LEGACY BROWSER HISTORY -->
         <!--<script src="js/libs/jquery.history.js"></script>-->
 
@@ -111,6 +120,11 @@
 
         <script type="text/javascript" src="js/modules/featureDiscovery.js"></script>
 
+        <!-- USER MODULE -->
+        <!--
+        <script type="text/javascript" src="js/modules/user.js"></script>
+        -->
+
         <!-- APP STARTER -->
 
         <script type="text/javascript">
@@ -125,5 +139,13 @@
         <script id="home-template" type="text/x-handlebars-template" src="/views/home.html"></script>
         <script id="settings-template" type="text/x-handlebars-template" src="/views/pages/settings.html"></script>
         <script id="infos-template" type="text/x-handlebars-template" src="/views/blocks/infos.html"></script>
+
+        <!-- USER MODULE -->
+        <!--
+        <script id="login-template" type="text/x-handlebars-template" src="/views/user/login.html"></script>
+        <script id="profile-template" type="text/x-handlebars-template" src="/views/user/profile.html"></script>
+        <script id="editPassword-template" type="text/x-handlebars-template" src="/views/user/editPassword.html"></script>
+        <script id="editProfile-template" type="text/x-handlebars-template" src="/views/user/editProfile.html"></script>
+        -->
     </body>
 </html>

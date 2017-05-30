@@ -42,7 +42,12 @@ var app = {
             app.core.ui.displayContentLoading(false);
             app.ctrl.homeAction();
 
+            app.ready();
         });
+    },
+
+    ready: function () {
+        $(document).trigger('app.ready');
     },
 
     // -------------------------------------------------------------------------

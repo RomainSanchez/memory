@@ -37,6 +37,7 @@ app.register({
             },
 
             render: function (templateName, data, clearContent) {
+                console.info('RENDER '+templateName,app.core.ui.templates);
                 var defer = $.Deferred();
 
                 $(document).trigger('ctrl.prerender');
