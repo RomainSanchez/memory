@@ -2,6 +2,8 @@
 
 A JavaScript frontend application developped with popular javascript / html / css libraries
 
+[![License](https://img.shields.io/github/license/libre-informatique/LiftJS.svg?style=flat-square)](./LICENCE.md)
+
 ![Application preview](https://github.com/libre-informatique/LiftJS/blob/master/img/preview.png)
 
 ## Install DEV env
