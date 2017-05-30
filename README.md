@@ -8,30 +8,38 @@ A JavaScript frontend application developped with popular javascript / html / cs
 
 ## Third party libraries
 
--   jQuery : https://jquery.com/
--   MaterializeCss : http://materializecss.com/
--   Material Icons : https://material.io/icons/
--   HandlebarsJS : http://handlebarsjs.com/
--   MomentJS : https://momentjs.com/
+- jQuery : https://jquery.com/
+- MaterializeCss : http://materializecss.com/
+- Material Icons : https://material.io/icons/
+- HandlebarsJS : http://handlebarsjs.com/
+- MomentJS : https://momentjs.com/
 
 ## Installation
 
 ### DEV env
 
--   cp data/parameters.json.dist data/parameters.json
--   edit data/parameters.json with your environments configuration
--   npm install
--   gulp
--   open localhost:8000
--   The window will refresh automatically and sass will be compiled every time you save a file in the project
+```bash
+$ cp data/parameters.json.dist data/parameters.json
+
+// edit data/parameters.json with your environments configuration
+
+$ npm install
+$ gulp
+
+// open localhost:8000, the window will refresh automatically and sass will be compiled every time you save a file in the project
+
+```
 
 ### PROD env
 
--   cp data/parameters.json.dist data/parameters.json
--   edit data/parameters.json with your environments configuration
--   npm install
--   gulp prod
+```bash
+$ cp data/parameters.json.dist data/parameters.json
 
+// edit data/parameters.json with your environments configuration
+
+$ npm install --production
+$ ./node_modules/node-sass/bin/node-sass ./sass/styles.scss:./css/styles.css
+```
 
 ## For developpers
 
@@ -97,7 +105,7 @@ Add a link / button to call your newlly created view
 
 ### Declare a custom module
 
-create your module file : js/myModule.js
+create your module file : js/modules/myModule.js
 
 ```js
 app.register({
@@ -110,17 +118,18 @@ app.register({
 });
 ```
 
-Include it in index.php between business modules and app starter
+Include it in index.php between app.js (and core files) and app starter
 
-```php
-<!-- BUSINESS COMPONENTS -->
+```html
+<!-- APP -->
 
-<script type="text/javascript" src="js/events.js"></script>
-<script type="text/javascript" src="js/cart.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+
+<!-- [...] -->
 
 <!-- MY CUSTOM MODULES -->
 
-<script type="text/javascript" src="js/myModule.js"></script>
+<script type="text/javascript" src="js/modules/myModule.js"></script>
 
 <!-- APP STARTER -->
 
@@ -130,7 +139,9 @@ Include it in index.php between business modules and app starter
 </script>
 ```
 
-Your module is now available through app.myModule. Example of usage :
+Your module is now available through `app.myModule`.
+
+ Example of usage :
 
 ```js
 console.info(app.myModule.aMethod());
@@ -152,6 +163,24 @@ app.register({
     }
 });
 ```
+
+### Custom module plugins
+
+Modules can register their own third party plugins by declaring initPlugins method :
+
+```js
+app.register({
+    myModule: {
+        initPlugins: function() {
+            // Example: init bootstrap tooltips
+            $('[data-toggle="tooltip"]').tooltip(); 
+        }
+    }
+});
+```
+
+your app.myModule.initPlugins() function will be called when all templates will be registered (event « templates.registered »), 
+a template is applyed (event « templates.applyed ») or a popstate is applyed (via navigator history, event « history.popedstate »)
 
 ### Module and application override
 

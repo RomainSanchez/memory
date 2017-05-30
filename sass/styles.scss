@@ -12,7 +12,6 @@ html {
         nav {
             background-color:$primary-color;
             position:fixed;
-            box-shadow:none;
             z-index: 998;
             height: 4.1em;
             .nav-wrapper {
@@ -59,7 +58,7 @@ html {
         }
 
         .content {
-            padding:4.1em 1em 1em 1em;
+            padding:4.6em 1em 1em 1em;
         }
     }
 
@@ -211,8 +210,6 @@ html {
             height: 150px;
         }
     }
-
-
 
     [type="checkbox"]:checked + label::before {
         border-right: 2px solid $success-color;
