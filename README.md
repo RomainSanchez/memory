@@ -2,7 +2,7 @@
 
 Libre-Informatique Frontend Tools : JavaScript frontend application
 
-WORK IN PROGRESS
+![Application preview](https://github.com/libre-informatique/LiftJS/blob/master/img/preview.png)
 
 ## Install DEV env
 
