@@ -17,8 +17,8 @@ app.register({
         // ---------------------------------------------------------------------
         
         homeAction: function()  {
-            app.core.history.add(app.ctrl.states.home);
             app.core.ctrl.go('home',{}).then(function() {
+                app.core.history.add(app.ctrl.states.home);
                 app.featureDiscovery.showFeatureDiscovery();
             });
         }
