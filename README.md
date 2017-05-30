@@ -38,7 +38,7 @@ $ cp data/parameters.json.dist data/parameters.json
 // edit data/parameters.json with your environments configuration
 
 $ npm install --production
-$ ./node_modules/node-sass/bin/node-sass ./sass/styles.scss:./css/styles.css
+$ ./node_modules/node-sass/bin/node-sass ./sass/ -o ./css/ 
 ```
 
 ## For developpers
