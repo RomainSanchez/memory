@@ -62,11 +62,11 @@ app.register({
                     // -------------------------------------------------------------
 
                     .ajaxStart(function () {
-                        app.core.ui.displayLoading();
+                        app.core.ui.displayContentLoading();
                     })
 
                     .ajaxStop(function () {
-                        app.core.ui.displayLoading(false);
+                        app.core.ui.displayContentLoading(false);
                     })
 
                     // -------------------------------------------------------------

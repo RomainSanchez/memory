@@ -15,46 +15,7 @@
 
             <!-- NAVBAR -->
 
-            <div id="mainLoader" class="progress">
-                <div class="indeterminate"></div>
-            </div>
-
-            <nav>
-                <div class="nav-wrapper primary">
-                    <a href="/" class="brand-logo"></a>
-                    <ul id="nav-mobile-left" class="left">
-                        <li>
-                            <a href='javascript:;' data-go="homeAction">
-                                <i class="material-icons left">home</i>
-                                <span class="button-label hide-on-med-and-down">Home</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul id="nav-mobile-right" class="right">
-                        <li>
-                            <a class='dropdown-button' href="javascript:;"
-                               data-activates='rightMenu'
-                               data-alignment="right"
-                               data-constrainWidth="false"
-                               data-belowOrigin="true"
-                               ><span class="button-label hide-on-med-and-down">Right Menu</span>
-                                <i class="material-icons"  id='rightMenuInfo'>menu</i>
-                            </a>
-
-                            <!-- Dropdown Structure -->
-                            <ul id='rightMenu' class='dropdown-content'>
-                                <li>
-                                    <a href="javascript:;" data-go="showSettings">
-                                        <i class="material-icons">settings</i>
-                                        Settings
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
+            <handlebar-placeholder template="navbar"></handlebar-placeholder>
 
             <div class="content">
 
@@ -108,6 +69,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <handlebar-placeholder template="infos"></handlebar-placeholder>
@@ -167,13 +129,11 @@
             $(document).ready(app.init());
         </script>
 
-        <!-- TEMPLATES LOADED DIRECTLY -->
+        <!-- TEMPLATES LOADED VIA AJAX -->
 
+        <script id="navbar-template" type="text/x-handlebars-template" src="/views/blocks/navbar.html"></script>
         <script id="home-template" type="text/x-handlebars-template" src="/views/home.html"></script>
         <script id="settings-template" type="text/x-handlebars-template" src="/views/pages/settings.html"></script>
         <script id="infos-template" type="text/x-handlebars-template" src="/views/blocks/infos.html"></script>
-
-        <!-- TEMPLATES LOADED VIA AJAX -->
-
     </body>
 </html>

@@ -36,6 +36,7 @@ var app = {
         // ALL TEMPLATES LOADED
 
         $(document).on('templates.registered', function () {
+            app.core.ui.applyTemplate('navbar');
             app.core.ui.plugins.init();
             app.core.ui.init();
             app.core.ui.displayContentLoading(false);

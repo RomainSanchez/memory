@@ -172,6 +172,8 @@ app.register({
             // -------------------------------------------------------------------------
 
             applyTemplate: function (name, tpl) {
+                if(!isDefined(tpl))
+                    tpl = app.core.ui.templates[name].data;
                 $('handlebar-placeholder[template="' + name + '"]').html(tpl);
                 $(document).trigger('template.applyed', [name]);
             },
@@ -182,21 +184,6 @@ app.register({
 
             clearContent: function () {
                 $('#app div.content handlebar-placeholder').html('');
-            },
-
-            // -------------------------------------------------------------------------
-            // SHOW LOADER IN TOP OF NAVBAR
-            // -------------------------------------------------------------------------
-
-            displayLoading: function (show) {
-                if (!isDefined(show))
-                    show = true;
-                var loader = $('#mainLoader');
-
-                if (show === true)
-                    loader.removeClass('hidden');
-                else
-                    loader.addClass('hidden');
             },
 
             // -------------------------------------------------------------------------

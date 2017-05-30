@@ -2,7 +2,7 @@
 
 A JavaScript frontend application developped with popular javascript / html / css libraries
 
-![Application preview](https://github.com/libre-informatique/LiftJS/blob/master/img/preview.png)
+![Application preview](img/preview.png)
 
 [![License](https://img.shields.io/github/license/libre-informatique/LiftJS.svg?style=flat-square)](./LICENCE.md)
 

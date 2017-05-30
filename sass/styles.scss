@@ -200,24 +200,6 @@ html {
         color: $primary-color;
     }
 
-    #mainLoader {
-        z-index      : 999;
-        opacity      : 1;
-        position     : fixed;
-        top:0;
-        margin: 0;
-        background-color: color('blue-grey','lighten-2'); 
-
-        &.hidden {
-            opacity: 0;
-        }
-        &.progress {
-            .indeterminate {
-                background-color: color('blue-grey','darken-1');
-            }
-        }
-    }
-
     #contentLoader {
         display:none;
         width: 150px;
