@@ -16,29 +16,47 @@ A JavaScript frontend application developped with popular javascript / html / cs
 
 ## Installation
 
+### Install liftJs in your web project
+
+```bash
+# in your web project folder
+$ mkdir ./LiftJS/
+$ cd ./LiftJS/
+$ git clone https://github.com/libre-informatique/LiftJS.git .
+```
+
+### Configure your application index
+```bash
+# in your web project folder
+$ cp ./LiftJS/index.html ./
+
+# append LiftJS/ in all javascript / css / templates imports
+```
+
 ### DEV env
 
 ```bash
+$ cd ./liftJs/
 $ cp data/parameters.json.dist data/parameters.json
 
-// edit data/parameters.json with your environments configuration
+# edit data/parameters.json with your environments configuration
 
 $ npm install
 $ gulp
 
-// open localhost:8000, the window will refresh automatically and sass will be compiled every time you save a file in the project
-
+# open localhost:8000, the window will refresh automatically and sass will be compiled every time you save a file in the project
 ```
 
 ### PROD env
 
 ```bash
+$ cd ./liftJs/
 $ cp data/parameters.json.dist data/parameters.json
 
 // edit data/parameters.json with your environments configuration
 
 $ npm install --production
-$ ./node_modules/node-sass/bin/node-sass ./sass/ -o ./css/ 
+$ ./node_modules/node-sass/bin/node-sass ./sass/ -o ./css/
 ```
 
 ## For developpers
@@ -173,13 +191,13 @@ app.register({
     myModule: {
         initPlugins: function() {
             // Example: init bootstrap tooltips
-            $('[data-toggle="tooltip"]').tooltip(); 
+            $('[data-toggle="tooltip"]').tooltip();
         }
     }
 });
 ```
 
-your app.myModule.initPlugins() function will be called when all templates will be registered (event « templates.registered »), 
+your app.myModule.initPlugins() function will be called when all templates will be registered (event « templates.registered »),
 a template is applyed (event « templates.applyed ») or a popstate is applyed (via navigator history, event « history.popedstate »)
 
 ### Module and application override

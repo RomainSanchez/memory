@@ -24,8 +24,8 @@ html {
                     @media #{$medium-and-up} {
                         & > i.material-icons {
                             display:inline-block;
-                        } 
-                    } 
+                        }
+                    }
                 }
                 @media #{$medium-and-up} {
                     & > #nav-mobile-right > li > a > span {
@@ -49,7 +49,7 @@ html {
             }
             li {
                 a {
-                    &:hover, 
+                    &:hover,
                         &:active {
                         background-color:color('blue-grey', 'darken-1');
                     }
@@ -64,10 +64,11 @@ html {
 
     .dropdown-content {
         li {
+            min-width:200px;
             &> a{
                 color: $primary-color;
 
-                &:hover, 
+                &:hover,
                     &:active {
                     background-color:$primary-color;
                     color: white;
@@ -148,8 +149,8 @@ html {
         width:100%;
     }
 
-    .btn:focus, 
-        .btn-large:focus, 
+    .btn:focus,
+        .btn-large:focus,
         .btn-floating:focus {
         &.primary {
             background-color: lighten($primary-color,15%);
