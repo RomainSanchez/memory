@@ -8,11 +8,11 @@ A JavaScript frontend application developped with popular javascript / html / cs
 
 ## Third party libraries
 
-- jQuery : https://jquery.com/
-- MaterializeCss : http://materializecss.com/
-- Material Icons : https://material.io/icons/
-- HandlebarsJS : http://handlebarsjs.com/
-- MomentJS : https://momentjs.com/
+-   jQuery : <https://jquery.com/>
+-   MaterializeCss : <http://materializecss.com/>
+-   Material Icons : <https://material.io/icons/>
+-   HandlebarsJS : <http://handlebarsjs.com/>
+-   MomentJS : <https://momentjs.com/>
 
 ## Installation
 
@@ -28,6 +28,7 @@ $ git clone https://github.com/libre-informatique/LiftJS.git .
 ### Configure your application parameters
 
 Copy LiftJS default `parameters.json.dist` and rename as `parameters.json`. You can put this file anywhere you want in your project directory (must be accessible by your web server). This example is in `config` directory in the web root of the project.
+
 ```bash
 $ cp /LiftJSdata/parameters.json.dist ./config/parameters.json
 ```
@@ -35,11 +36,13 @@ $ cp /LiftJSdata/parameters.json.dist ./config/parameters.json
 ### Configure your application index
 
 Include LiftJS stylesheet in your document `head`
+
 ```html
 <link rel="stylesheet" type="text/css" href="LiftJS/css/styles.css">
 ```
 
 Include LiftJS third party libraries in your document `body` (if you already use any of this third party libraries in your current application, you won't have to include it again)
+
 ```html
 <script src="LiftJS/js/libs/jquery-3.2.1.min.js"></script>
 <script src="LiftJS/js/libs/handlebars-v4.0.5.js"></script>
@@ -48,6 +51,7 @@ Include LiftJS third party libraries in your document `body` (if you already use
 ```
 
 Include LiftJS core components in your document `body` after third party libraries
+
 ```html
 <script type="text/javascript" src="LiftJS/js/app.js"></script>
 <script type="text/javascript" src="LiftJS/js/core/utils.js"></script>
@@ -61,11 +65,13 @@ Include LiftJS core components in your document `body` after third party librari
 ```
 
 **OPTIONAL** : Include LiftJS modules libraries in your document `body` after Lift core components
+
 ```html
 <script type="text/javascript" src="LiftJS/js/modules/featureDiscovery.js"></script>
 ```
 
 Include LiftJS core templates
+
 > You can override a template by changing it's src attribute. Targeting your own template will replace existing one (keep the same id in order to replace existing template).
 
 ```html
@@ -76,6 +82,7 @@ Include LiftJS core templates
 ```
 
 Add the LiftJS app starter script
+
 ```html
 <!-- APP STARTER -->
 
@@ -89,6 +96,32 @@ Add the LiftJS app starter script
     $(document).ready(app.init());
 </script>
 ```
+
+Add the handlebars placeholders in your index inside element with id `app`:
+
+```html
+<div id="app">
+
+    <!-- PUT HERE PLACEHOLDERS FOR GLOBAL VIEWS -->
+    <!-- THESE PLACEHOLDERS WON'T BE CLEARED WHEN VIEW CHANGE -->
+
+    <handlebar-placeholder template="navbar"></handlebar-placeholder>
+
+    <div class="content">
+        <!-- PUT HERE PLACEHOLDERS FOR EACH VIEWS -->
+        <!-- THESE PLACEHOLDERS WILL BE CLEARED WHEN VIEW CHANGE -->
+
+        <handlebar-placeholder template="home"></handlebar-placeholder>
+        <handlebar-placeholder template="settings"></handlebar-placeholder>
+
+        <!-- OPTIONALY : PUT A SPINNER WITH ID = contentLoader -->
+        <!-- THIS SPINNER WILL BE SHOWN WHEN VIEW LOADS AND AJAX CALLS -->
+        <div id="contentLoader"></div>
+    </div>
+</div>
+```
+
+That's done !
 
 ## For developpers
 
