@@ -25,38 +25,69 @@ $ cd ./LiftJS/
 $ git clone https://github.com/libre-informatique/LiftJS.git .
 ```
 
+### Configure your application parameters
+
+Copy LiftJS default `parameters.json.dist` and rename as `parameters.json`. You can put this file anywhere you want in your project directory (must be accessible by your web server). This example is in `config` directory in the web root of the project.
+```bash
+$ cp /LiftJSdata/parameters.json.dist ./config/parameters.json
+```
+
 ### Configure your application index
-```bash
-# in your web project folder
-$ cp ./LiftJS/index.html ./
 
-# append LiftJS/ in all javascript / css / templates imports
+Include LiftJS stylesheet in your document `head`
+```html
+<link rel="stylesheet" type="text/css" href="LiftJS/css/styles.css">
 ```
 
-### DEV env
-
-```bash
-$ cd ./liftJs/
-$ cp data/parameters.json.dist data/parameters.json
-
-# edit data/parameters.json with your environments configuration
-
-$ npm install
-$ gulp
-
-# open localhost:8000, the window will refresh automatically and sass will be compiled every time you save a file in the project
+Include LiftJS third party libraries in your document `body` (if you already use any of this third party libraries in your current application, you won't have to include it again)
+```html
+<script src="LiftJS/js/libs/jquery-3.2.1.min.js"></script>
+<script src="LiftJS/js/libs/handlebars-v4.0.5.js"></script>
+<script src="LiftJS/js/libs/materialize.min.js"></script>
+<script src="LiftJS/js/libs/moment-with-locales.min.js"></script>
 ```
 
-### PROD env
+Include LiftJS core components in your document `body` after third party libraries
+```html
+<script type="text/javascript" src="LiftJS/js/app.js"></script>
+<script type="text/javascript" src="LiftJS/js/core/utils.js"></script>
+<script type="text/javascript" src="LiftJS/js/core/ui.js"></script>
+<script type="text/javascript" src="LiftJS/js/core/controller.js"></script>
+<script type="text/javascript" src="LiftJS/js/core/events.js"></script>
+<script type="text/javascript" src="LiftJS/js/core/session.js"></script>
+<script type="text/javascript" src="LiftJS/js/core/history.js"></script>
+<script type="text/javascript" src="LiftJS/js/core/modal.js"></script>
+<script type="text/javascript" src="LiftJS/js/core/settings.js"></script>
+```
 
-```bash
-$ cd ./liftJs/
-$ cp data/parameters.json.dist data/parameters.json
+**OPTIONAL** : Include LiftJS modules libraries in your document `body` after Lift core components
+```html
+<script type="text/javascript" src="LiftJS/js/modules/featureDiscovery.js"></script>
+```
 
-// edit data/parameters.json with your environments configuration
+Include LiftJS core templates
+> You can override a template by changing it's src attribute. Targeting your own template will replace existing one (keep the same id in order to replace existing template).
 
-$ npm install --production
-$ ./node_modules/node-sass/bin/node-sass ./sass/ -o ./css/
+```html
+<script id="navbar-template" type="text/x-handlebars-template" src="LiftJS/views/blocks/navbar.html"></script>
+<script id="modal-template" type="text/x-handlebars-template" src="LiftJS/views/blocks/modal.html"></script>
+<script id="home-template" type="text/x-handlebars-template" src="LiftJS/views/home.html"></script>
+<script id="settings-template" type="text/x-handlebars-template" src="LiftJS/views/pages/settings.html"></script>
+```
+
+Add the LiftJS app starter script
+```html
+<!-- APP STARTER -->
+
+<script type="text/javascript">
+    // Set your custom host if needed (without trailing slash)
+    app.config.host = "https://myhost.dev";
+    // Set your custom parameters.json path
+    app.config.parametersPath = "/config/parameters.json"
+
+    // START APP
+    $(document).ready(app.init());
+</script>
 ```
 
 ## For developpers

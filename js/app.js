@@ -16,6 +16,8 @@ var app = {
 
         var host = null;
 
+        // MANAGE INSTANCE HOST URL
+
         if (isDefined(app.config.host)) {
             host = app.config.host;
         } else {
@@ -26,7 +28,7 @@ var app = {
 
         // GET APP PARAMETERS
 
-        $.get(host + '/data/parameters.json', function(params) {
+        $.get(host + (app.config.parametersPath ? app.config.parametersPath : '/data/parameters.json'), function(params) {
             app.config = params;
             app.core.utils.init();
             app.core.events.init();
