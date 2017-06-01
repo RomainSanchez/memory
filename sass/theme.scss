@@ -1,77 +1,92 @@
+@charset "UTF-8";
+
 // MaterializeCSS  Variable overrides
 
 $small-screen-up: 801px !default;
 $small-screen: 800px !default;
 
-// MaterializeCSS Import
+// import materialize
+// @import "materializecss/materialize";
+@charset "UTF-8";
 
-@import "materializecss/ghpages-materialize";
+// Mixins
+@import "materializecss/components/mixins";
+@import "color";
+
+// Variables;
+@import "materializecss/components/variables";
+
+// Reset
+@import "materializecss/components/normalize";
+
+// components
+@import "materializecss/components/global";
+@import "materializecss/components/badges";
+@import "materializecss/components/icons-material-design";
+@import "materializecss/components/grid";
+@import "materializecss/components/navbar";
+@import "materializecss/components/roboto";
+@import "materializecss/components/typography";
+@import "materializecss/components/transitions";
+@import "materializecss/components/cards";
+@import "materializecss/components/toast";
+@import "materializecss/components/tabs";
+@import "materializecss/components/tooltip";
+@import "materializecss/components/buttons";
+@import "materializecss/components/dropdown";
+@import "materializecss/components/waves";
+@import "materializecss/components/modal";
+@import "materializecss/components/collapsible";
+@import "materializecss/components/chips";
+@import "materializecss/components/materialbox";
+@import "materializecss/components/forms/forms";
+@import "materializecss/components/table_of_contents";
+@import "materializecss/components/sideNav";
+@import "materializecss/components/preloader";
+@import "materializecss/components/slider";
+@import "materializecss/components/carousel";
+@import "materializecss/components/tapTarget";
+@import "materializecss/components/pulse";
+@import "materializecss/components/date_picker/default";
+@import "materializecss/components/date_picker/default.date";
+@import "materializecss/components/date_picker/default.time";
 
 // Custom Theme colors
 
-$primary-color: color('blue-grey','darken-2');
+$primary-color: color('li-main','darken-1');
 $accent-color: color('amber', 'lighten-2');
 $success-color: color('green', 'lighten-1');
 $danger-color: color('red', 'lighten-2');
-$info-color: color('blue', 'lighten-2'); 
-$normal-color: color('blue-grey', 'base');
+$info-color: color('blue', 'lighten-2');
+$default-color: color('blue-grey', 'base');
 $body-bg: color('blue-grey','lighten-5');
 $neutral-color: color('grey','base');
 
 // Main colors classes
 
-.primary {
-    background-color:$primary-color;
-    &.btn:hover {
-        background-color:lighten($primary-color,10%);
-    }
-}
-.primary-text {
-    color:$primary-color;
-}
+$mainColors: (
+    "primary": $primary-color,
+    "accent": $accent-color,
+    "success": $success-color,
+    "danger": $danger-color,
+    "info": $info-color,
+);
 
-.accent {
-    background-color:$accent-color;
-    &.btn:hover {
-        background-color:lighten($accent-color,10%);
+@each $color, $color_value in $mainColors {
+    .#{$color} {
+        background-color: $color_value !important;
     }
-}
-.accent-text {
-    color:$accent-color;
-}
 
-.success {
-    background-color:$success-color;
-    &.btn:hover {
-        background-color:lighten($success-color,10%);
+    .#{$color}-text {
+        color: $color_value !important;
     }
-}
-.success-text {
-    color:$success-color;
-}
 
-.danger {
-    background-color:$danger-color;
     &.btn:hover {
-        background-color:lighten($danger-color,10%);
+        background-color: lighten($color_value,10%);
     }
-}
-.danger-text {
-    color:$danger-color;
-}
-
-.info {
-    background-color:$info-color;
-    &.btn:hover {
-        background-color:lighten($info-color,10%);
-    }
-}
-.info-text {
-    color:$info-color;
 }
 
 // Material icons
-
 @font-face {
     font-family: 'Material Icons';
     font-style : normal;

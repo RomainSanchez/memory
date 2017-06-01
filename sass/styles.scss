@@ -51,7 +51,7 @@ html {
                 a {
                     &:hover,
                         &:active {
-                        background-color:color('blue-grey', 'darken-1');
+                        background-color:darken($primary-color,5%);
                     }
                 }
             }
@@ -167,8 +167,8 @@ html {
         &.info{
             background-color: lighten($info-color,15%);
         }
-        &.normal{
-            background-color: lighten($normal-color,15%);
+        &.default{
+            background-color: lighten($default-color,15%);
         }
     }
 
