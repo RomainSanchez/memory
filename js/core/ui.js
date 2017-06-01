@@ -74,7 +74,7 @@ app.register({
                     // RECURSION OVER APPLICATION COMPONENTS
                     Object.keys(component).forEach(function (key) {
                         var c = component[key];
-                        if (c.hasOwnProperty('initPlugins')) {
+                        if (c && c.hasOwnProperty('initPlugins')) {
                             c.initPlugins();
                         } else if (typeof c === "object") {
                             app.core.ui.plugins.registerComponentPlugins(c, ++deep);
@@ -104,10 +104,13 @@ app.register({
                 // FETCH REMOTE TEMPLATES
 
                 $('script[type="text/x-handlebars-template"]').each(function () {
+                    var defer = $.Deferred();
                     var tpl = $(this);
                     var id = tpl.attr('id').replace('-template', '');
                     var src = tpl.attr('src');
                     var tplCb = tpl.attr('data-callback');
+
+                    promises.push(defer.promise());
 
                     if (isDefined(src)) {
                         $.ajax({
@@ -128,7 +131,7 @@ app.register({
 
                                 $(document).trigger('template.registered', [app.core.ui.templates[id]]);
 
-                                promises.push(this);
+                                defer.resolve();
                             }
                         });
                     } else {
@@ -142,7 +145,7 @@ app.register({
 
                         $(document).trigger('template.registered', [app.core.ui.templates[id]]);
 
-                        promises.push(this);
+                        defer.resolve();
                     }
                 });
 
@@ -158,7 +161,7 @@ app.register({
             // -------------------------------------------------------------------------
 
             applyTemplate: function (name, tpl) {
-                if(!isDefined(tpl))
+                if (!isDefined(tpl) && app.core.ui.templates.hasOwnProperty(name))
                     tpl = app.core.ui.templates[name].data;
                 $('handlebar-placeholder[template="' + name + '"]').html(tpl);
                 $(document).trigger('template.applyed', [name]);

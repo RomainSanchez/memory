@@ -23,17 +23,42 @@ A JavaScript frontend application developped with popular javascript / html / cs
 $ mkdir ./LiftJS/
 $ cd ./LiftJS/
 $ git clone https://github.com/libre-informatique/LiftJS.git .
+
+# If PROD
+
+$ npm install --production
+$ ./node_modules/node-sass/bin/node-sass ./sass/styles.scss ./css/styles.css
+
+# If DEV
+
+$ npm install
+$ gulp
 ```
 
 ### Configure your application parameters
 
-Copy LiftJS default `parameters.json.dist` and rename as `parameters.json`. You can put this file anywhere you want in your project directory (must be accessible by your web server). This example is in `config` directory in the web root of the project.
+Copy LiftJS default `parameters.json.dist` and rename as `parameters.json`. You can put this file anywhere you want in your project directory (must be accessible by your web server).
 
 ```bash
-$ cp /LiftJSdata/parameters.json.dist ./config/parameters.json
+# in your web project folder
+$ cp ./LiftJS/data/parameters.json.dist ./parameters.json
+```
+
+### Update your application parameters
+
+```js
+// parameters.json
+{
+    "debug": true, // Set to false for prod env
+    "applicationName":"LiftJs", // The name that will be set in title and navbar
+    "clientSessionName": "liftJs", // storage key (sessionStorage / localStorage)
+    "appUriPrefix": "" // Prefix used for applications URLs : e.g : #/ or ?/ or empty
+}
 ```
 
 ### Configure your application index
+
+> You can copy the default LiftJS index.html file and adapt it to fit your needs (change include paths, etc.)
 
 Include LiftJS stylesheet in your document `head`
 
@@ -90,7 +115,7 @@ Add the LiftJS app starter script
     // Set your custom host if needed (without trailing slash)
     app.config.host = "https://myhost.dev";
     // Set your custom parameters.json path
-    app.config.parametersPath = "/config/parameters.json"
+    app.config.parametersPath = "/parameters.json"
 
     // START APP
     $(document).ready(app.init());
@@ -120,6 +145,22 @@ Add the handlebars placeholders in your index inside element with id `app`:
     </div>
 </div>
 ```
+
+## Configure your web server
+
+If you use apache, you can use this rewrite rule in order to allow an empty value of `appUriPrefix` parameters.
+
+```apache
+<IfModule mod_rewrite.c>
+    Options -MultiViews
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_URI} !^LiftJS
+    RewriteRule ^(.*)$ index.html [QSA,L]
+</IfModule>
+```
+> you can see this example in .htaccess-example in LiftJs root folder
 
 That's done !
 

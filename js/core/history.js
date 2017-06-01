@@ -6,8 +6,8 @@ app.register({
             currentState: null,
 
             // HOLDS CURRENT VIEW CALLABLE (USED FOR RECALL)
-            currentCallable: function () {
-//                app.ctrl.homeAction();
+            currentCallable: function() {
+                //                app.ctrl.homeAction();
             },
 
             // WRAPPER BROWSER HISTORY
@@ -23,7 +23,7 @@ app.register({
             // ADD ENTRY TO BROWSER HISTORY STACK
             // ---------------------------------------------------------------------
 
-            add: function (state) {
+            add: function(state) {
                 var currentState = app.core.history.provider.state;
 
                 if (currentState === null || currentState.state.path !== state.path) {
@@ -31,7 +31,7 @@ app.register({
                     app.core.history.provider.pushState({
                         content: content,
                         state: state
-                    }, state.title, "?/" + state.path);
+                    }, state.title, app.config.appUriPrefix + state.path);
 
                     app.core.history.currentState = state;
                 }
@@ -41,29 +41,29 @@ app.register({
             // INIT EVENTS (CALLED BY APP CORE EVENTS)
             // ---------------------------------------------------------------------
 
-            initEvents: function () {
-
+            initEvents: function() {
+                
                 // -----------------------------------------------------------------
                 // HISTORY POP
                 // -----------------------------------------------------------------
 
                 $(window)
-                    .on('popstate', function (event) {
+                    .on('popstate', function(event) {
                         var state = event.originalEvent.state;
                         if (state && !app.core.history.disableBack) {
                             $('#app').html(state.content);
                             $(document).trigger('history.popedstate');
-
+                        } else {
+                            console.info('popstate', app.core.history.disableBack, state);
                         }
                     });
 
                 $(document)
-                    .on('history.popedstate', function () {
+                    .on('history.popedstate', function() {
                         app.core.ui.plugins.init();
                         $('.dropdown-button').dropdown('close');
                         app.featureDiscovery.showFeatureDiscovery();
-                    })
-                    ;
+                    });
             }
         }
     }

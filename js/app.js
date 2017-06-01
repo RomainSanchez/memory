@@ -47,7 +47,6 @@ var app = {
             app.core.ui.applyTemplate('navbar');
             app.core.ui.plugins.init();
             app.core.ui.init();
-            app.core.ui.displayContentLoading(false);
             app.ctrl.homeAction();
 
             app.ready();

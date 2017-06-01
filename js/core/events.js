@@ -100,7 +100,7 @@ app.register({
                 // RECURSION OVER APPLICATION COMPONENTS
                 Object.keys(component).forEach(function (key) {
                     var c = component[key];
-                    if (c.hasOwnProperty('initEvents')) {
+                    if (isDefined(c) && c.hasOwnProperty('initEvents')) {
                         c.initEvents();
                     } else if (typeof c === "object") {
                         app.core.events.registerComponentEvents(c, ++deep);

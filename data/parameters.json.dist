@@ -2,4 +2,5 @@
     "debug": true,
     "applicationName":"LiftJs",
     "clientSessionName": "liftJs",
+    "appUriPrefix": ""
 }

@@ -75,14 +75,13 @@ $mainColors: (
 @each $color, $color_value in $mainColors {
     .#{$color} {
         background-color: $color_value !important;
+        &.btn:hover {
+            background-color: lighten($color_value,10%);
+        }
     }
 
     .#{$color}-text {
         color: $color_value !important;
-    }
-
-    &.btn:hover {
-        background-color: lighten($color_value,10%);
     }
 }
 
