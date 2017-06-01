@@ -5,10 +5,6 @@
 $small-screen-up: 801px !default;
 $small-screen: 800px !default;
 
-// import materialize
-// @import "materializecss/materialize";
-@charset "UTF-8";
-
 // Mixins
 @import "materializecss/components/mixins";
 @import "color";
@@ -74,14 +70,14 @@ $mainColors: (
 
 @each $color, $color_value in $mainColors {
     .#{$color} {
-        background-color: $color_value !important;
+        background-color: $color_value;
         &.btn:hover {
             background-color: lighten($color_value,10%);
         }
     }
 
     .#{$color}-text {
-        color: $color_value !important;
+        color: $color_value;
     }
 }
 

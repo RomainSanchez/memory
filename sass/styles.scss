@@ -103,27 +103,27 @@ html {
             border-bottom-style: solid;
 
             &.info {
-                background: white;
+                background-color: white;
                 color: $info-color;
                 border-bottom-color: $info-color;
             }
             &.warning {
-                background: white;
+                background-color: white;
                 color: $accent-color;
                 border-bottom-color:$accent-color ;
             }
             &.error {
-                background: white;
+                background-color: white;
                 color: $danger-color;
                 border-bottom-color:$danger-color ;
             }
             &.success {
-                background: white;
+                background-color: white;
                 color: $success-color;
                 border-bottom-color: $success-color;
             }
             &.default {
-                background: white;
+                background-color: white;
                 color: $default-color;
                 border-bottom-color:$default-color ;
             }

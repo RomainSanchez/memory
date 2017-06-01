@@ -6765,44 +6765,44 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
     margin-bottom: 5em; } }
 
 .primary {
-  background-color: #3685b6 !important; }
+  background-color: #3685b6; }
   .primary.btn:hover, .primary.btn-large:hover {
     background-color: #539ecc; }
 
 .primary-text {
-  color: #3685b6 !important; }
+  color: #3685b6; }
 
 .accent {
-  background-color: #ffd54f !important; }
+  background-color: #ffd54f; }
   .accent.btn:hover, .accent.btn-large:hover {
     background-color: #ffe182; }
 
 .accent-text {
-  color: #ffd54f !important; }
+  color: #ffd54f; }
 
 .success {
-  background-color: #66BB6A !important; }
+  background-color: #66BB6A; }
   .success.btn:hover, .success.btn-large:hover {
     background-color: #89cb8c; }
 
 .success-text {
-  color: #66BB6A !important; }
+  color: #66BB6A; }
 
 .danger {
-  background-color: #E57373 !important; }
+  background-color: #E57373; }
   .danger.btn:hover, .danger.btn-large:hover {
     background-color: #ed9e9e; }
 
 .danger-text {
-  color: #E57373 !important; }
+  color: #E57373; }
 
 .info {
-  background-color: #64B5F6 !important; }
+  background-color: #64B5F6; }
   .info.btn:hover, .info.btn-large:hover {
     background-color: #94ccf9; }
 
 .info-text {
-  color: #64B5F6 !important; }
+  color: #64B5F6; }
 
 @font-face {
   font-family: 'Material Icons';
@@ -6918,27 +6918,27 @@ html {
       border-bottom-style: solid; }
       body #toast-container .toast.info,
       html #toast-container .toast.info {
-        background: white;
+        background-color: white;
         color: #64B5F6;
         border-bottom-color: #64B5F6; }
       body #toast-container .toast.warning,
       html #toast-container .toast.warning {
-        background: white;
+        background-color: white;
         color: #ffd54f;
         border-bottom-color: #ffd54f; }
       body #toast-container .toast.error,
       html #toast-container .toast.error {
-        background: white;
+        background-color: white;
         color: #E57373;
         border-bottom-color: #E57373; }
       body #toast-container .toast.success,
       html #toast-container .toast.success {
-        background: white;
+        background-color: white;
         color: #66BB6A;
         border-bottom-color: #66BB6A; }
       body #toast-container .toast.default,
       html #toast-container .toast.default {
-        background: white;
+        background-color: white;
         color: #607d8b;
         border-bottom-color: #607d8b; }
   body :focus,
@@ -7055,3 +7055,5 @@ html {
     html form .btn-large {
       width: 100%;
       margin: 1em 0; } }
+
+/*# sourceMappingURL=styles.css.map */
