@@ -1,14 +1,14 @@
 app.register({
     core: {
         events: {
-            init: function () {
+            init: function() {
                 $(document)
 
                     // -------------------------------------------------------------
                     // NAV BUTTONS
                     // -------------------------------------------------------------
 
-                    .on('click', '*[data-go]', function (e) {
+                    .on('click', '*[data-go]', function(e) {
                         e.stopImmediatePropagation();
                         e.stopPropagation();
                         e.preventDefault();
@@ -26,7 +26,7 @@ app.register({
                     // FORM CUSTOM SUBMIT
                     // -------------------------------------------------------------
 
-                    .on('submit', 'form[data-ws], form[data-ctrl]', function (e) {
+                    .on('submit', 'form[data-ws], form[data-ctrl]', function(e) {
                         e.stopImmediatePropagation();
                         e.stopPropagation();
                         e.preventDefault();
@@ -42,18 +42,20 @@ app.register({
                             return;
                         }
 
-                        callableAction($(this));
+                        var formData = app.core.utils.formToObject($(this));
+
+                        callableAction(formData);
                     })
 
                     // -------------------------------------------------------------
                     // AJAX SPINNER
                     // -------------------------------------------------------------
 
-                    .ajaxStart(function () {
+                    .ajaxStart(function() {
                         app.core.ui.displayContentLoading();
                     })
 
-                    .ajaxStop(function () {
+                    .ajaxStop(function() {
                         app.core.ui.displayContentLoading(false);
                     })
 
@@ -61,7 +63,7 @@ app.register({
                     // GLOBAL BEHAVIORS
                     // -------------------------------------------------------------
 
-                    .on('click', '[href="#"]', function (e) {
+                    .on('click', '[href="#"]', function(e) {
                         e.preventDefault();
                         return false;
                     })
@@ -70,18 +72,21 @@ app.register({
                     // TEMPLATING ENGINE
                     // -------------------------------------------------------------
 
-                    .on('template.applyed', function () {
+                    .on('template.applyed', function() {
                         app.core.ui.displayContentLoading(false);
                         app.core.ui.plugins.init();
+                        if ($('handlebar-placeholder[template="' + name + '"]').find('form').length > 0) {
+                            Materialize.updateTextFields();
+                        }
                     })
 
-                    .on('template.registered', function (e, template) {
+                    .on('template.registered', function(e, template) {
                         if (template.id === "infos") {
                             app.core.ui.applyTemplate(template.id, template.data);
                         }
                     })
 
-                    ;
+                ;
 
                 app.core.events.registerComponentEvents(app);
             },
@@ -90,7 +95,7 @@ app.register({
             // INITIALIZE COMPONENTS EVENTS
             // ---------------------------------------------------------------------
 
-            registerComponentEvents: function (component, deep) {
+            registerComponentEvents: function(component, deep) {
                 if (!isDefined(deep))
                     deep = 0;
 
@@ -98,7 +103,7 @@ app.register({
                     return;
 
                 // RECURSION OVER APPLICATION COMPONENTS
-                Object.keys(component).forEach(function (key) {
+                Object.keys(component).forEach(function(key) {
                     var c = component[key];
                     if (isDefined(c) && c.hasOwnProperty('initEvents')) {
                         c.initEvents();

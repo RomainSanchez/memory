@@ -1,13 +1,13 @@
 app.register({
     core: {
         utils: {
-            init: function () {
+            init: function() {
 
                 // -----------------------------------------------------------------
                 // HANDLEBAR MISSING IF
                 // -----------------------------------------------------------------
 
-                Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+                Handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
 
                     switch (operator) {
                         case '==':
@@ -43,7 +43,7 @@ app.register({
                 // RENDER DATE / DATETIME
                 // -----------------------------------------------------------------
 
-                Handlebars.registerHelper('formatDate', function (dateStr, format) {
+                Handlebars.registerHelper('formatDate', function(dateStr, format) {
                     var date = moment(dateStr);
                     return date.format(format);
                 });
@@ -52,7 +52,7 @@ app.register({
                 // RENDER YES / NO BADGE
                 // -----------------------------------------------------------------
 
-                Handlebars.registerHelper('ouiNon', function (boolean) {
+                Handlebars.registerHelper('ouiNon', function(boolean) {
                     return (boolean ? '<span class="teal badge white-text">Oui</span>' : '<span class="red badge">Non</span>');
                 });
 
@@ -60,7 +60,7 @@ app.register({
                 // EXPOSE CONFIG OBJECT
                 // -----------------------------------------------------------------
 
-                Handlebars.registerHelper('config', function (path) {
+                Handlebars.registerHelper('config', function(path) {
                     return app.core.utils.deepFind(app.config, path);
                 });
 
@@ -70,7 +70,13 @@ app.register({
             // CONVERT FORM (AFTER .serializeArray() ) TO OBJECT
             // ---------------------------------------------------------------------
 
-            formToObject: function (formArray) {
+            formToObject: function(formArray) {
+
+                if (!Array.isArray(formArray)) {
+                    if ($(formArray).is('form')) {
+                        formArray = formArray.serializeArray();
+                    }
+                }
 
                 var returnArray = {};
                 for (var i = 0; i < formArray.length; i++) {
@@ -88,7 +94,7 @@ app.register({
             // PUTS FIRST LETTER OF STRING IN UPPER CASE
             // ---------------------------------------------------------------------
 
-            ucfirst: function (string) {
+            ucfirst: function(string) {
                 return string.charAt(0).toUpperCase() + string.slice(1);
             },
 
@@ -96,7 +102,7 @@ app.register({
             // WRAPPER FOR MOMENT JS PARSE DATE
             // ---------------------------------------------------------------------
 
-            parseDate: function (string, format) {
+            parseDate: function(string, format) {
                 var date = null;
                 if (isDefined(format))
                     date = moment(string, format).toDate();
@@ -109,10 +115,10 @@ app.register({
             // HELPER TO QUERY OBJECT WITH XPATH LIKE
             // ---------------------------------------------------------------------
 
-            deepFind: function (obj, path) {
-                var paths = path.split('.')
-                    , current = obj
-                    , i;
+            deepFind: function(obj, path) {
+                var paths = path.split('.'),
+                    current = obj,
+                    i;
 
                 for (i = 0; i < paths.length; ++i) {
                     if (current[paths[i]] === 'undefined' || current[paths[i]] === null) {
