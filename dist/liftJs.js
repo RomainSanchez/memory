@@ -173,10 +173,16 @@ app.register({
                         $(document).trigger('ctrl.beforego');
 
                         var action = $(this).attr('data-go');
+                        var args = $(this).attr('data-go-args');
 
                         var callableAction = app.ctrl[action];
 
-                        callableAction();
+                        if (isDefined(args) && args !== null && args !== "")
+                            args = JSON.parse(args);
+                        else
+                            args = undefined;
+
+                        callableAction(args);
                     })
 
                     // -------------------------------------------------------------
@@ -231,11 +237,11 @@ app.register({
                     // TEMPLATING ENGINE
                     // -------------------------------------------------------------
 
-                    .on('template.applied', function() {
+                    .on('template.applied', function(e, name) {
                         if (app.isReady)
                             app.core.ui.displayContentLoading(false);
                         app.core.ui.plugins.init();
-                        if ($('handlebar-placeholder[template="' + name + '"]').find('form').length > 0) {
+                        if ($('handlebars-template[name="' + name + '"]').find('form').length > 0) {
                             Materialize.updateTextFields();
                         }
                     })
@@ -281,7 +287,6 @@ app.register({
         }
     }
 });
-
 app.register({
     core: {
         history: {
@@ -758,7 +763,6 @@ app.register({
         }
     }
 });
-
 app.register({
     core: {
         utils: {
