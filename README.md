@@ -1,6 +1,6 @@
 # LiftJS : Libre-Informatique Frontend Tool
 
-A JavaScript frontend application developped with popular javascript / html / css libraries
+A JavaScript frontend starter application developped with popular javascript / html / css libraries
 
 ![Application preview](img/preview.png)
 
@@ -49,7 +49,7 @@ $ cp ./LiftJS/data/parameters.json.dist ./parameters.json
 }
 ```
 
-> IMPORTANT: Don't expose sensitives informations in this file ! It is publicly accessible because the application fetch it with an ajax call at startup.
+> IMPORTANT: Don't expose sensitive information in this file ! It is publicly accessible as the application fetches it with an ajax call on startup.
 
 ### Set includes
 
@@ -108,7 +108,7 @@ You have 3 options:
 -   Include a template in `div` with class `.content`. The template will be cleared after calling `app.core.ctrl.go(templateName,data)` and `app.core.ctrl.render(templateName,data,true)`.
 -   Include a template in `div` with id `#app`. The template won't be cleared after calling `app.core.ctrl.go(templateName,data)` and `app.core.ctrl.render(templateName,data,true)`.
 
-> You can override a template by changing it's src attribute. Targeting your own template will replace existing one (keep the same id in order to replace existing template).
+> You can override a template by changing it's src attribute. Targeting your own template will replace the existing one (keep the same id in order to replace existing template).
 
 ```html
 <div id="app">
@@ -279,7 +279,7 @@ Your `app.myModule.initPlugins()` function will be called when all templates wil
 
 ### Custom module templates
 
-You can register template with the function `registerTemplates`. Use ui function `app.core.ui.addTemplate(type, name, src);` to add a template (src will be prefixed with parameter `liftJsPath`).
+You can register template with the `registerTemplates` function. Use ui function `app.core.ui.addTemplate(type, name, src);` to add a template (src will be prefixed with parameter `liftJsPath`).
 
 ```js
 app.register({
