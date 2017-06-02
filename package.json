@@ -18,6 +18,7 @@
     "gulp-connect": "^5.0.0",
     "gulp-copy": "^1.0.0",
     "gulp-minify": "^1.0.0",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.0"
   },

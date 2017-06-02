@@ -5,14 +5,14 @@ var connect = require('gulp-connect');
 var minify = require('gulp-minify');
 var concat = require('gulp-concat');
 var gulpCopy = require('gulp-copy');
-
+var rename = require('gulp-rename');
 
 
 // -----------------------------------------------------------
 // DEV LIB
 // -----------------------------------------------------------
 
-gulp.task('connect', function () {
+gulp.task('connect', function() {
     connect.server({
         root: './',
         port: 8000,
@@ -21,20 +21,22 @@ gulp.task('connect', function () {
 });
 
 // keeps gulp from crashing for scss errors
-gulp.task('sass', function () {
+gulp.task('sass', function() {
     return gulp.src('./sass/*.scss')
-        .pipe(sass({errLogToConsole: true}))
+        .pipe(sass({
+            errLogToConsole: true
+        }))
         .pipe(sourcemaps.init())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./css'));
 });
 
-gulp.task('livereload', function () {
+gulp.task('livereload', function() {
     gulp.src('./**/*')
         .pipe(connect.reload());
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', function() {
     gulp.watch('./sass/**/*.scss', ['sass']);
     gulp.watch('./**/*', ['livereload']);
 });
@@ -43,7 +45,29 @@ gulp.task('watch', function () {
 // BUILDING LIB
 // -----------------------------------------------------------
 
-gulp.task('compress-main', function () {
+gulp.task('dist-sass', function() {
+    gulp.src('./sass/styles.scss')
+        .pipe(sass({
+            errLogToConsole: true,
+            sourceMap: true
+        }))
+        .pipe(rename('liftJs.css'))
+        .pipe(sourcemaps.init())
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('./dist'));
+
+    gulp.src('./sass/styles.scss')
+        .pipe(sass({
+            outputStyle: 'compressed',
+            errLogToConsole: true,
+            sourceComments: false,
+            sourceMap: false
+        }))
+        .pipe(rename('liftJs.min.css'))
+        .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('dist-compress-main', function() {
     gulp.src(['js/app.js', 'js/core/*.js'])
         .pipe(concat('liftJs.js'))
         .pipe(minify({
@@ -55,7 +79,7 @@ gulp.task('compress-main', function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('compress-modules', function () {
+gulp.task('dist-compress-modules', function() {
     gulp.src(['js/modules/*.js'])
         .pipe(minify({
             ext: {
@@ -66,7 +90,7 @@ gulp.task('compress-modules', function () {
         .pipe(gulp.dest('dist/modules'));
 });
 
-gulp.task('copy-libs', function () {
+gulp.task('dist-copy-libs', function() {
     gulp.src(['js/libs/*.js'])
         .pipe(gulp.dest('dist/libs'));
 });
@@ -78,6 +102,4 @@ gulp.task('copy-libs', function () {
 
 gulp.task('default', ['connect', 'sass', 'watch']);
 
-gulp.task('build', ['sass', 'compress-main', 'compress-modules', 'copy-libs']);
-
-gulp.task('prod', ['sass']);
+gulp.task('build', ['dist-sass', 'dist-compress-main', 'dist-compress-modules', 'dist-copy-libs']);

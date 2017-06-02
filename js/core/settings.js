@@ -21,10 +21,9 @@ app.register({
             });
         },
 
-        updateSettings: function (form) {
-            var formData = app.core.utils.formToObject(form.serializeArray());
+        updateSettings: function (data) {
 
-            if (formData.clearAllInfosMessages === true) {
+            if (data.clearAllInfosMessages === true) {
                 app.featureDiscovery.__resetInfosStorage();
             }
             app.core.ui.toast("Paramètres enregistrés", "success");

@@ -101,14 +101,13 @@ app.register({
             initTemplates: function () {
                 var promises = [];
 
-                // FETCH REMOTE TEMPLATES
+                // FETCH TEMPLATES
 
-                $('script[type="text/x-handlebars-template"]').each(function () {
+                $('handlebars-template').each(function () {
                     var defer = $.Deferred();
                     var tpl = $(this);
-                    var id = tpl.attr('id').replace('-template', '');
+                    var id = tpl.attr('name');
                     var src = tpl.attr('src');
-                    var tplCb = tpl.attr('data-callback');
 
                     promises.push(defer.promise());
 
@@ -125,9 +124,6 @@ app.register({
                                     data: data,
                                     element: tpl
                                 };
-
-                                // UPDATE SCRIPT TEMPLATE HTML
-                                tpl.html(data);
 
                                 $(document).trigger('template.registered', [app.core.ui.templates[id]]);
 
@@ -163,8 +159,8 @@ app.register({
             applyTemplate: function (name, tpl) {
                 if (!isDefined(tpl) && app.core.ui.templates.hasOwnProperty(name))
                     tpl = app.core.ui.templates[name].data;
-                $('handlebar-placeholder[template="' + name + '"]').html(tpl);
-                $(document).trigger('template.applyed', [name]);
+                $('handlebars-template[name="' + name + '"]').html(tpl);
+                $(document).trigger('template.applied', [name]);
             },
 
             // -------------------------------------------------------------------------
@@ -172,7 +168,7 @@ app.register({
             // -------------------------------------------------------------------------
 
             clearContent: function () {
-                $('#app div.content handlebar-placeholder').html('');
+                $('#app div.content handlebars-template').html('');
             },
 
             // -------------------------------------------------------------------------

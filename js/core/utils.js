@@ -74,7 +74,7 @@ app.register({
 
                 if (!Array.isArray(formArray)) {
                     if ($(formArray).is('form')) {
-                        formArray = formArray.serializeArray();
+                        formArray = $(formArray).serializeArray();
                     }
                 }
 

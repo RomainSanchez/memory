@@ -23,19 +23,11 @@ A JavaScript frontend application developped with popular javascript / html / cs
 $ mkdir ./LiftJS/
 $ cd ./LiftJS/
 $ git clone https://github.com/libre-informatique/LiftJS.git .
-
-# If PROD
-
-$ npm install --production
-$ ./node_modules/node-sass/bin/node-sass ./sass/styles.scss ./css/styles.css
-
-# If DEV
-
-$ npm install
-$ gulp
 ```
 
-### Configure your application parameters
+## Integrate liftJs to your project
+
+### Initialize parameters
 
 Copy LiftJS default `parameters.json.dist` and rename as `parameters.json`. You can put this file anywhere you want in your project directory (must be accessible by your web server).
 
@@ -44,7 +36,7 @@ Copy LiftJS default `parameters.json.dist` and rename as `parameters.json`. You 
 $ cp ./LiftJS/data/parameters.json.dist ./parameters.json
 ```
 
-### Update your application parameters
+### Update parameters
 
 ```js
 // parameters.json
@@ -56,14 +48,14 @@ $ cp ./LiftJS/data/parameters.json.dist ./parameters.json
 }
 ```
 
-### Configure your application index
+> IMPORTANT: Don't expose sensitives informations in this file ! It is publicly accessible because the application fetch it with an ajax call at startup.
 
-> You can copy the default LiftJS index.html file and adapt it to fit your needs (change include paths, etc.)
+### Set includes
 
 Include LiftJS stylesheet in your document `head`
 
 ```html
-<link rel="stylesheet" type="text/css" href="LiftJS/css/styles.css">
+<link rel="stylesheet" type="text/css" href="LiftJS/dist/liftJs.min.css">
 ```
 
 Include LiftJS third party libraries in your document `body` (if you already use any of this third party libraries in your current application, you won't have to include it again)
@@ -75,36 +67,19 @@ Include LiftJS third party libraries in your document `body` (if you already use
 <script src="LiftJS/js/libs/moment-with-locales.min.js"></script>
 ```
 
-Include LiftJS core components in your document `body` after third party libraries
+Include the LiftJS distributed file in your document `body` after third party libraries
 
 ```html
-<script type="text/javascript" src="LiftJS/js/app.js"></script>
-<script type="text/javascript" src="LiftJS/js/core/utils.js"></script>
-<script type="text/javascript" src="LiftJS/js/core/ui.js"></script>
-<script type="text/javascript" src="LiftJS/js/core/controller.js"></script>
-<script type="text/javascript" src="LiftJS/js/core/events.js"></script>
-<script type="text/javascript" src="LiftJS/js/core/session.js"></script>
-<script type="text/javascript" src="LiftJS/js/core/history.js"></script>
-<script type="text/javascript" src="LiftJS/js/core/modal.js"></script>
-<script type="text/javascript" src="LiftJS/js/core/settings.js"></script>
+<script type="text/javascript" src="LiftJS/dist/liftJs.min.js"></script>
 ```
 
 **OPTIONAL** : Include LiftJS modules libraries in your document `body` after Lift core components
 
 ```html
-<script type="text/javascript" src="LiftJS/js/modules/featureDiscovery.js"></script>
+<script type="text/javascript" src="LiftJS/dist/modules/featureDiscovery.min.js"></script>
 ```
 
-Include LiftJS core templates
-
-> You can override a template by changing it's src attribute. Targeting your own template will replace existing one (keep the same id in order to replace existing template).
-
-```html
-<script id="navbar-template" type="text/x-handlebars-template" src="LiftJS/views/blocks/navbar.html"></script>
-<script id="modal-template" type="text/x-handlebars-template" src="LiftJS/views/blocks/modal.html"></script>
-<script id="home-template" type="text/x-handlebars-template" src="LiftJS/views/home.html"></script>
-<script id="settings-template" type="text/x-handlebars-template" src="LiftJS/views/pages/settings.html"></script>
-```
+### Add starter
 
 Add the LiftJS app starter script
 
@@ -122,33 +97,40 @@ Add the LiftJS app starter script
 </script>
 ```
 
-Add the handlebars placeholders in your index inside element with id `app`:
+### Declare templates
+
+Include LiftJS core templates in your `index.html`.
+
+You have 2 options:
+
+-   Include a template in `div` with class `.content`. The template will be cleared after calling `app.core.ctrl.go(templateName,data)` and `app.core.ctrl.render(templateName,data,true)`.
+-   Include a template in `div` with id `#app`. The template won't be cleared after calling `app.core.ctrl.go(templateName,data)` and `app.core.ctrl.render(templateName,data,true)`.
+
+> You can override a template by changing it's src attribute. Targeting your own template will replace existing one (keep the same id in order to replace existing template).
 
 ```html
 <div id="app">
 
-    <!-- PUT HERE PLACEHOLDERS FOR GLOBAL VIEWS -->
-    <!-- THESE PLACEHOLDERS WON'T BE CLEARED WHEN VIEW CHANGE -->
-
-    <handlebar-placeholder template="navbar"></handlebar-placeholder>
+    <handlebars-template name="navbar" src="/LiftJS/views/blocks/navbar.html"></handlebars-template>
 
     <div class="content">
-        <!-- PUT HERE PLACEHOLDERS FOR EACH VIEWS -->
-        <!-- THESE PLACEHOLDERS WILL BE CLEARED WHEN VIEW CHANGE -->
 
-        <handlebar-placeholder template="home"></handlebar-placeholder>
-        <handlebar-placeholder template="settings"></handlebar-placeholder>
+        <!-- OVERRIDEN HOME VIEW -->
+        <handlebars-template name="home" src="views/home.html"></handlebars-template>
 
-        <!-- OPTIONALY : PUT A SPINNER WITH ID = contentLoader -->
-        <!-- THIS SPINNER WILL BE SHOWN WHEN VIEW LOADS AND AJAX CALLS -->
-        <div id="contentLoader"></div>
+        <handlebars-template name="settings" src="LiftJs/views/pages/settings.html"></handlebars-template>
+
     </div>
+
+    <!-- OPTIONAL : PUT A SPINNER WITH ID = #contentLoader -->
+    <!-- THIS SPINNER WILL BE SHOWN WHEN VIEW LOADS AND AJAX CALLS -->
+    <div id="contentLoader"></div>
 </div>
 ```
 
-## Configure your web server
+## Configure web server
 
-If you use apache, you can use this rewrite rule in order to allow an empty value of `appUriPrefix` parameters.
+If you use `apache`, you can use this rewrite rule in order to allow an empty value of `appUriPrefix` parameters.
 
 ```apache
 <IfModule mod_rewrite.c>
@@ -157,9 +139,16 @@ If you use apache, you can use this rewrite rule in order to allow an empty valu
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_URI} !^LiftJS
+    RewriteCond %{REQUEST_URI} !^js
+    RewriteCond %{REQUEST_URI} !^css
+    RewriteCond %{REQUEST_URI} !^img
+    RewriteCond %{REQUEST_URI} !^fonts
+    RewriteCond %{REQUEST_URI} !^views
+    # RewriteCond %{REQUEST_URI} !^anyDirectoryOrFileYouWantToBeAccessible
     RewriteRule ^(.*)$ index.html [QSA,L]
 </IfModule>
 ```
+
 > you can see this example in .htaccess-example in LiftJs root folder
 
 That's done !
@@ -168,7 +157,7 @@ That's done !
 
 ### Add new view
 
-Create your view template in views/myView.html directory.
+Create your view template in `views/myView.html` directory.
 
 ```html
 <div>
@@ -176,23 +165,23 @@ Create your view template in views/myView.html directory.
 </div>
 ```
 
-Append to index.php the script tag that holds your view template :
-
-With AJAX template loading :
+Put the view template in `index.html`
 
 ```html
-<script id="myView-template" type="text/x-handlebars-template" src="views/myView.html"></script>
+<div id="app">
+
+    <!-- [...] -->
+
+    <div class="content">
+        <handlebars-template name="myView" src="views/myView.html"></handlebars-template>
+    </div>
+
+    <!-- [...] -->
+
+</div>
 ```
 
-OR
-
-With loading in index view :
-
-```php
-<script id="myView-template" type="text/x-handlebars-template"><?php echo file_get_contents("./views/myView.html"); ?></script>
-```
-
-Add action to js/core/controller.js (You should use a custom module instead of editing core's files,  see [Declare a custom module](#declare-a-custom-module) )
+Add action to `js/core/controller.js` (You should use a custom module instead of editing core's files, see [Declare a custom module](#declare-a-custom-module) )
 
 ```js
 app.register({
@@ -202,20 +191,6 @@ app.register({
         },
     }
 });
-```
-
-Put the view placeholder in index.php
-
-```html
-<div id="app">
-
-    <!-- [...] -->
-
-    <handlebar-placeholder template="myView"></handlebar-placeholder>
-
-    <!-- [...] -->
-
-</div>
 ```
 
 Add a link / button to call your newlly created view
@@ -228,7 +203,7 @@ Add a link / button to call your newlly created view
 
 ### Declare a custom module
 
-create your module file : js/modules/myModule.js
+Create your module file `js/modules/myModule.js`
 
 ```js
 app.register({
@@ -241,12 +216,12 @@ app.register({
 });
 ```
 
-Include it in index.php between app.js (and core files) and app starter
+Include it in `index.html` between `liftJs.min.js` and [app starter](#add-starter)
 
 ```html
 <!-- APP -->
 
-<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="LiftJS/dist/liftJs.min.js"></script>
 
 <!-- [...] -->
 
@@ -264,7 +239,7 @@ Include it in index.php between app.js (and core files) and app starter
 
 Your module is now available through `app.myModule`.
 
- Example of usage :
+Example of usage :
 
 ```js
 console.info(app.myModule.aMethod());
@@ -272,7 +247,7 @@ console.info(app.myModule.aMethod());
 
 ### Custom module events
 
-Modules can register their own events by declaring initEvents method :
+Modules can register their own events by declaring `initEvents` method :
 
 ```js
 app.register({
@@ -289,7 +264,7 @@ app.register({
 
 ### Custom module plugins
 
-Modules can register their own third party plugins by declaring initPlugins method :
+Modules can register their own third party plugins by declaring `initPlugins` method :
 
 ```js
 app.register({
@@ -302,8 +277,7 @@ app.register({
 });
 ```
 
-your app.myModule.initPlugins() function will be called when all templates will be registered (event « templates.registered »),
-a template is applyed (event « templates.applyed ») or a popstate is applyed (via navigator history, event « history.popedstate »)
+Your `app.myModule.initPlugins()` function will be called when all templates will be registered (event `templates.registered`), a template is applied (event `templates.applied`) or a popstate is applied (via navigator history, event `history.popedstate`)
 
 ### Module and application override
 
@@ -320,9 +294,9 @@ app.register({
             // Append new method to app.core.ctrl
             alert('Action called with app.ctrl.myAction()');
         },
-        login : function() {
-            // Override app.ctrl.login() action
-            alert('Login Action overriden');
+        homeAction : function() {
+            // Override app.ctrl.homeAction() action
+            alert('Home Action overriden');
         }
     }
 });

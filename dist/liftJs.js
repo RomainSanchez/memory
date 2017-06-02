@@ -139,14 +139,14 @@ app.register({
 app.register({
     core: {
         events: {
-            init: function () {
+            init: function() {
                 $(document)
 
                     // -------------------------------------------------------------
                     // NAV BUTTONS
                     // -------------------------------------------------------------
 
-                    .on('click', '*[data-go]', function (e) {
+                    .on('click', '*[data-go]', function(e) {
                         e.stopImmediatePropagation();
                         e.stopPropagation();
                         e.preventDefault();
@@ -164,7 +164,7 @@ app.register({
                     // FORM CUSTOM SUBMIT
                     // -------------------------------------------------------------
 
-                    .on('submit', 'form[data-ws], form[data-ctrl]', function (e) {
+                    .on('submit', 'form[data-ws], form[data-ctrl]', function(e) {
                         e.stopImmediatePropagation();
                         e.stopPropagation();
                         e.preventDefault();
@@ -180,18 +180,20 @@ app.register({
                             return;
                         }
 
-                        callableAction($(this));
+                        var formData = app.core.utils.formToObject($(this));
+
+                        callableAction(formData);
                     })
 
                     // -------------------------------------------------------------
                     // AJAX SPINNER
                     // -------------------------------------------------------------
 
-                    .ajaxStart(function () {
+                    .ajaxStart(function() {
                         app.core.ui.displayContentLoading();
                     })
 
-                    .ajaxStop(function () {
+                    .ajaxStop(function() {
                         app.core.ui.displayContentLoading(false);
                     })
 
@@ -199,7 +201,7 @@ app.register({
                     // GLOBAL BEHAVIORS
                     // -------------------------------------------------------------
 
-                    .on('click', '[href="#"]', function (e) {
+                    .on('click', '[href="#"]', function(e) {
                         e.preventDefault();
                         return false;
                     })
@@ -208,18 +210,21 @@ app.register({
                     // TEMPLATING ENGINE
                     // -------------------------------------------------------------
 
-                    .on('template.applyed', function () {
+                    .on('template.applied', function() {
                         app.core.ui.displayContentLoading(false);
                         app.core.ui.plugins.init();
+                        if ($('handlebar-placeholder[template="' + name + '"]').find('form').length > 0) {
+                            Materialize.updateTextFields();
+                        }
                     })
 
-                    .on('template.registered', function (e, template) {
+                    .on('template.registered', function(e, template) {
                         if (template.id === "infos") {
                             app.core.ui.applyTemplate(template.id, template.data);
                         }
                     })
 
-                    ;
+                ;
 
                 app.core.events.registerComponentEvents(app);
             },
@@ -228,7 +233,7 @@ app.register({
             // INITIALIZE COMPONENTS EVENTS
             // ---------------------------------------------------------------------
 
-            registerComponentEvents: function (component, deep) {
+            registerComponentEvents: function(component, deep) {
                 if (!isDefined(deep))
                     deep = 0;
 
@@ -236,7 +241,7 @@ app.register({
                     return;
 
                 // RECURSION OVER APPLICATION COMPONENTS
-                Object.keys(component).forEach(function (key) {
+                Object.keys(component).forEach(function(key) {
                     var c = component[key];
                     if (isDefined(c) && c.hasOwnProperty('initEvents')) {
                         c.initEvents();
@@ -443,10 +448,9 @@ app.register({
             });
         },
 
-        updateSettings: function (form) {
-            var formData = app.core.utils.formToObject(form.serializeArray());
+        updateSettings: function (data) {
 
-            if (formData.clearAllInfosMessages === true) {
+            if (data.clearAllInfosMessages === true) {
                 app.featureDiscovery.__resetInfosStorage();
             }
             app.core.ui.toast("Paramètres enregistrés", "success");
@@ -454,6 +458,7 @@ app.register({
         }
     }
 });
+
 app.register({
     core: {
         ui: {
@@ -557,14 +562,13 @@ app.register({
             initTemplates: function () {
                 var promises = [];
 
-                // FETCH REMOTE TEMPLATES
+                // FETCH TEMPLATES
 
-                $('script[type="text/x-handlebars-template"]').each(function () {
+                $('handlebars-template').each(function () {
                     var defer = $.Deferred();
                     var tpl = $(this);
-                    var id = tpl.attr('id').replace('-template', '');
+                    var id = tpl.attr('name');
                     var src = tpl.attr('src');
-                    var tplCb = tpl.attr('data-callback');
 
                     promises.push(defer.promise());
 
@@ -581,9 +585,6 @@ app.register({
                                     data: data,
                                     element: tpl
                                 };
-
-                                // UPDATE SCRIPT TEMPLATE HTML
-                                tpl.html(data);
 
                                 $(document).trigger('template.registered', [app.core.ui.templates[id]]);
 
@@ -619,8 +620,8 @@ app.register({
             applyTemplate: function (name, tpl) {
                 if (!isDefined(tpl) && app.core.ui.templates.hasOwnProperty(name))
                     tpl = app.core.ui.templates[name].data;
-                $('handlebar-placeholder[template="' + name + '"]').html(tpl);
-                $(document).trigger('template.applyed', [name]);
+                $('handlebars-template[name="' + name + '"]').html(tpl);
+                $(document).trigger('template.applied', [name]);
             },
 
             // -------------------------------------------------------------------------
@@ -628,7 +629,7 @@ app.register({
             // -------------------------------------------------------------------------
 
             clearContent: function () {
-                $('#app div.content handlebar-placeholder').html('');
+                $('#app div.content handlebars-template').html('');
             },
 
             // -------------------------------------------------------------------------
@@ -683,13 +684,13 @@ app.register({
 app.register({
     core: {
         utils: {
-            init: function () {
+            init: function() {
 
                 // -----------------------------------------------------------------
                 // HANDLEBAR MISSING IF
                 // -----------------------------------------------------------------
 
-                Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+                Handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
 
                     switch (operator) {
                         case '==':
@@ -725,7 +726,7 @@ app.register({
                 // RENDER DATE / DATETIME
                 // -----------------------------------------------------------------
 
-                Handlebars.registerHelper('formatDate', function (dateStr, format) {
+                Handlebars.registerHelper('formatDate', function(dateStr, format) {
                     var date = moment(dateStr);
                     return date.format(format);
                 });
@@ -734,7 +735,7 @@ app.register({
                 // RENDER YES / NO BADGE
                 // -----------------------------------------------------------------
 
-                Handlebars.registerHelper('ouiNon', function (boolean) {
+                Handlebars.registerHelper('ouiNon', function(boolean) {
                     return (boolean ? '<span class="teal badge white-text">Oui</span>' : '<span class="red badge">Non</span>');
                 });
 
@@ -742,7 +743,7 @@ app.register({
                 // EXPOSE CONFIG OBJECT
                 // -----------------------------------------------------------------
 
-                Handlebars.registerHelper('config', function (path) {
+                Handlebars.registerHelper('config', function(path) {
                     return app.core.utils.deepFind(app.config, path);
                 });
 
@@ -752,7 +753,13 @@ app.register({
             // CONVERT FORM (AFTER .serializeArray() ) TO OBJECT
             // ---------------------------------------------------------------------
 
-            formToObject: function (formArray) {
+            formToObject: function(formArray) {
+
+                if (!Array.isArray(formArray)) {
+                    if ($(formArray).is('form')) {
+                        formArray = $(formArray).serializeArray();
+                    }
+                }
 
                 var returnArray = {};
                 for (var i = 0; i < formArray.length; i++) {
@@ -770,7 +777,7 @@ app.register({
             // PUTS FIRST LETTER OF STRING IN UPPER CASE
             // ---------------------------------------------------------------------
 
-            ucfirst: function (string) {
+            ucfirst: function(string) {
                 return string.charAt(0).toUpperCase() + string.slice(1);
             },
 
@@ -778,7 +785,7 @@ app.register({
             // WRAPPER FOR MOMENT JS PARSE DATE
             // ---------------------------------------------------------------------
 
-            parseDate: function (string, format) {
+            parseDate: function(string, format) {
                 var date = null;
                 if (isDefined(format))
                     date = moment(string, format).toDate();
@@ -791,10 +798,10 @@ app.register({
             // HELPER TO QUERY OBJECT WITH XPATH LIKE
             // ---------------------------------------------------------------------
 
-            deepFind: function (obj, path) {
-                var paths = path.split('.')
-                    , current = obj
-                    , i;
+            deepFind: function(obj, path) {
+                var paths = path.split('.'),
+                    current = obj,
+                    i;
 
                 for (i = 0; i < paths.length; ++i) {
                     if (current[paths[i]] === 'undefined' || current[paths[i]] === null) {

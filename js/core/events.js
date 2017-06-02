@@ -72,7 +72,7 @@ app.register({
                     // TEMPLATING ENGINE
                     // -------------------------------------------------------------
 
-                    .on('template.applyed', function() {
+                    .on('template.applied', function() {
                         app.core.ui.displayContentLoading(false);
                         app.core.ui.plugins.init();
                         if ($('handlebar-placeholder[template="' + name + '"]').find('form').length > 0) {

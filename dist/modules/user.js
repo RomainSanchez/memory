@@ -26,7 +26,7 @@ app.register({
 
                     var form = $(this);
 
-                    var formData = app.core.utils.formToObject(form.serializeArray());
+                    var formData = app.core.utils.formToObject(form);
 
                     if (formData.username !== "" && formData.password !== "") {
                         app.ws.userLogin(formData.username, formData.password, formData.rememberMe, form);
@@ -134,7 +134,7 @@ app.register({
 
         updateUser: function (form) {
             var formData =
-                $.extend(app.core.session.user, app.core.utils.formToObject(form.serializeArray()));
+                $.extend(app.core.session.user, app.core.utils.formToObject(form));
 
             if (formData.hasOwnProperty('password_1')) {
                 formData.password = formData.password_1;
@@ -252,7 +252,7 @@ app.register({
 
         updatePassword: function (form) {
             if (app.core.session.user) {
-                var formData = app.core.utils.formToObject(form.serializeArray());
+                var formData = app.core.utils.formToObject(form);
 
                 if (formData.password_1 == formData.password_2) {
                     app.ws.updateUser(form);
@@ -284,7 +284,7 @@ app.register({
 
         updateSettings: function (form) {
             if (app.core.session.user) {
-                var formData = app.core.utils.formToObject(form.serializeArray());
+                var formData = app.core.utils.formToObject(form);
 
                 if (formData.clearAllInfosMessages === true) {
                     app.featureDiscovery.__resetInfosStorage();

@@ -1,9 +1,14 @@
-
 <IfModule mod_rewrite.c>
     Options -MultiViews
     RewriteEngine On
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_URI} !^LiftJS
+    RewriteCond %{REQUEST_URI} !^js
+    RewriteCond %{REQUEST_URI} !^css
+    RewriteCond %{REQUEST_URI} !^img
+    RewriteCond %{REQUEST_URI} !^fonts
+    RewriteCond %{REQUEST_URI} !^views
+    # RewriteCond %{REQUEST_URI} !^anyDirectoryOrFileYouWantToBeAccessible
     RewriteRule ^(.*)$ index.html [QSA,L]
 </IfModule>
