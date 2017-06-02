@@ -80,13 +80,15 @@ gulp.task('dist-compress-main', function() {
 });
 
 gulp.task('dist-compress-modules', function() {
-    gulp.src(['js/modules/*.js'])
+    gulp.src(['js/modules/**/*.js'])
         .pipe(minify({
             ext: {
                 min: '.min.js'
             },
             ignoreFiles: ['.min.js', '-min.js']
         }))
+        .pipe(gulp.dest('dist/modules'));
+    gulp.src(['js/modules/**/*.html'])
         .pipe(gulp.dest('dist/modules'));
 });
 

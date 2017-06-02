@@ -5,7 +5,7 @@ app.register({
             // HANDLE APPLICATION TEMPLATES
             templates: {},
 
-            init: function () {
+            init: function() {
                 $(document).trigger('ui.init');
             },
 
@@ -13,7 +13,7 @@ app.register({
             // UI GLOBAL EVENTS
             // -------------------------------------------------------------------------
 
-            initEvents: function () {
+            initEvents: function() {
 
             },
 
@@ -22,7 +22,7 @@ app.register({
             // -------------------------------------------------------------------------
 
             plugins: {
-                init: function () {
+                init: function() {
                     moment.locale('fr');
                     app.core.ui.setApplicationName();
                     app.core.ui.plugins.initTabs();
@@ -35,7 +35,7 @@ app.register({
                 // MATERIALIZECSS TABS
                 // ---------------------------------------------------------------------
 
-                initTabs: function () {
+                initTabs: function() {
                     $('ul#tabs').tabs();
                     var tabsId = $('div.tab-content:first-of-type').attr('id');
                     $('ul#tabs').tabs('select_tab', tabsId);
@@ -45,7 +45,7 @@ app.register({
                 // MATERIALIZECSS TOOLTIPS
                 // ---------------------------------------------------------------------
 
-                initTooltips: function () {
+                initTooltips: function() {
                     $('.material-tooltip').remove();
                     $('*[data-tooltip]').tooltip({
                         delay: 50
@@ -56,7 +56,7 @@ app.register({
                 // MATERIALIZECSS DROPDOWN
                 // ---------------------------------------------------------------------
 
-                initDropDown: function () {
+                initDropDown: function() {
                     $('.dropdown-button').dropdown();
                 },
 
@@ -64,7 +64,7 @@ app.register({
                 // INITIALIZE COMPONENTS PLUGINS
                 // ---------------------------------------------------------------------
 
-                registerComponentPlugins: function (component, deep) {
+                registerComponentPlugins: function(component, deep) {
                     if (!isDefined(deep))
                         deep = 0;
 
@@ -72,7 +72,7 @@ app.register({
                         return;
 
                     // RECURSION OVER APPLICATION COMPONENTS
-                    Object.keys(component).forEach(function (key) {
+                    Object.keys(component).forEach(function(key) {
                         var c = component[key];
                         if (c && c.hasOwnProperty('initPlugins')) {
                             c.initPlugins();
@@ -87,7 +87,7 @@ app.register({
             // SETS APP NAME IN NAVBAR AND PAGE TITLE
             // -------------------------------------------------------------------------
 
-            setApplicationName: function () {
+            setApplicationName: function() {
                 var appName = app.config.applicationName;
 
                 document.title = appName;
@@ -95,15 +95,42 @@ app.register({
             },
 
             // -------------------------------------------------------------------------
+            // CALL MODULES SELF TEMPLATES REGISTER
+            // -------------------------------------------------------------------------
+
+            registerModulesTemplates: function(component, deep) {
+                if (!isDefined(component))
+                    component = app;
+
+                if (!isDefined(deep))
+                    deep = 0;
+
+                if (deep > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
+                    return;
+
+                // RECURSION OVER APPLICATION COMPONENTS
+                Object.keys(component).forEach(function(key) {
+                    var c = component[key];
+                    if (c !== null) {
+                        if (c && c.hasOwnProperty('registerTemplates')) {
+                            c.registerTemplates();
+                        } else if (typeof c === "object") {
+                            app.core.ui.registerModulesTemplates(c, deep + 1);
+                        }
+                    }
+                });
+            },
+
+            // -------------------------------------------------------------------------
             // LOOP LOADING HANDLEBARS TEMPLATES
             // -------------------------------------------------------------------------
 
-            initTemplates: function () {
+            initTemplates: function() {
                 var promises = [];
 
                 // FETCH TEMPLATES
 
-                $('handlebars-template').each(function () {
+                $('handlebars-template').each(function() {
                     var defer = $.Deferred();
                     var tpl = $(this);
                     var id = tpl.attr('name');
@@ -115,7 +142,7 @@ app.register({
                         $.ajax({
                             async: true,
                             url: src,
-                            success: function (data) {
+                            success: function(data) {
 
                                 // REGISTER TEMPLATE
 
@@ -145,18 +172,45 @@ app.register({
                     }
                 });
 
-                $.when.apply($, promises).then(function () {
+                $.when.apply($, promises).then(function() {
                     $(document).trigger('templates.registered');
-                }, function (e) {
+                }, function(e) {
                     $(document).trigger('app.failed');
                 });
+            },
+
+            addTemplate: function(type, name, src) {
+                var target = $('#app');
+                var action = 'prepend';
+
+                if (type === "content") {
+                    target = target.find('.content');
+                    action = 'append';
+                }
+
+                // REMOVE TEMPLATE IF ALREADY PRESENT IN BODY
+                var existing = target.find('handlebars-template[name="' + name + '"]');
+                if (existing.length != 0 && existing.attr('override') !== 'true') {
+                    existing.remove();
+                    delete app.core.ui.templates[name];
+                }
+
+                if (existing.attr('override') !== 'true') {
+                    // ADDING TEMPLATE IN BODY
+                    target[action](
+                        $('<handlebars-template/>').attr({
+                            name: name,
+                            src: app.config.liftJsPath + src
+                        })
+                    );
+                }
             },
 
             // -------------------------------------------------------------------------
             // APPLY COMPILED TEMPLATE
             // -------------------------------------------------------------------------
 
-            applyTemplate: function (name, tpl) {
+            applyTemplate: function(name, tpl) {
                 if (!isDefined(tpl) && app.core.ui.templates.hasOwnProperty(name))
                     tpl = app.core.ui.templates[name].data;
                 $('handlebars-template[name="' + name + '"]').html(tpl);
@@ -167,15 +221,16 @@ app.register({
             // CLEAR .CONTENT PLACEHOLDERS
             // -------------------------------------------------------------------------
 
-            clearContent: function () {
+            clearContent: function() {
                 $('#app div.content handlebars-template').html('');
+                $(document).trigger('content.cleared');
             },
 
             // -------------------------------------------------------------------------
             // SHOW BIG LOADER IN CONTENT
             // -------------------------------------------------------------------------
 
-            displayContentLoading: function (show) {
+            displayContentLoading: function(show) {
                 if (!isDefined(show))
                     show = true;
                 var loader = $('#contentLoader');
@@ -190,7 +245,7 @@ app.register({
             // SHOW TOAST (FLASH MESSAGE)
             // -------------------------------------------------------------------------
 
-            toast: function (message, type, delay) {
+            toast: function(message, type, delay) {
                 if (!isDefined(delay))
                     delay = 5000;
                 if (!isDefined(type))

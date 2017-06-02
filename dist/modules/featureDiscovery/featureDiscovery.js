@@ -1,14 +1,21 @@
 app.register({
     featureDiscovery: {
 
-        initEvents: function () {
+        registerTemplates: function() {
+
+            app.core.ui.addTemplate('app', 'infos', 'js/modules/featureDiscovery/views/infos.html');
+            app.core.ui.addTemplate('content', 'settings', 'js/modules/featureDiscovery/views/settings.html');
+
+        },
+
+        initEvents: function() {
             $(document)
-                .on('click', '.tap-target button.understood', function () {
+                .on('click', '.tap-target button.understood', function() {
                     var tap = $(this).closest('.tap-target');
                     app.featureDiscovery.hideFeatureDiscovery(tap.attr('id'), true);
                 })
 
-                .on('click', '.tap-target', function (e) {
+                .on('click', '.tap-target', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     e.stopImmediatePropagation();
@@ -18,16 +25,22 @@ app.register({
                     }
                 })
 
-                .on('ctrl.beforego', function () {
+                .on('ctrl.beforego, content.cleared', function() {
                     app.featureDiscovery.hideFeatureDiscovery();
                 })
-                ;
+                .on('ctrl.aftergo, history.popedstate, ctrl.postrender', function() {
+                    app.featureDiscovery.showFeatureDiscovery();
+                })
+
+            ;
+
+
         },
         // -------------------------------------------------------------------------
         // SHOW FEATURE DISCOVERIES
         // -------------------------------------------------------------------------
 
-        showFeatureDiscovery: function (id) {
+        showFeatureDiscovery: function(id) {
 
             var elem = $('.tap-target');
 
@@ -35,7 +48,7 @@ app.register({
                 elem = elem.filter('#' + id);
             }
 
-            elem.each(function () {
+            elem.each(function() {
                 var id = $(this).attr('id');
 
                 if (!app.featureDiscovery.__getInfosStorage().hasOwnProperty(id))
@@ -48,7 +61,7 @@ app.register({
         // HIDE FEATURE DISCOVERIES
         // -------------------------------------------------------------------------
 
-        hideFeatureDiscovery: function (id, dontshowagain) {
+        hideFeatureDiscovery: function(id, dontshowagain) {
             var elem = null;
             if (!isDefined(id)) {
                 elem = $('.tap-target');
@@ -67,7 +80,7 @@ app.register({
         // INTERNAL : MANAGE « DON'T SHOW AGAIN » FEATURE
         // -------------------------------------------------------------------------
 
-        __getInfosStorage: function () {
+        __getInfosStorage: function() {
             var infos = localStorage.getItem(app.config.clientSessionName + '_infos');
 
             if (infos === null)
@@ -75,15 +88,24 @@ app.register({
 
             return JSON.parse(infos);
         },
-        __setInfosStorage: function (id) {
+        __setInfosStorage: function(id) {
             var infos = app.featureDiscovery.__getInfosStorage();
 
             infos[id] = id;
 
             localStorage.setItem(app.config.clientSessionName + '_infos', JSON.stringify(infos));
         },
-        __resetInfosStorage: function () {
+        __resetInfosStorage: function() {
             localStorage.setItem(app.config.clientSessionName + '_infos', '{}');
+        }
+    },
+    ctrl: {
+        updateSettings: function(data) {
+            if (data.clearAllInfosMessages === true) {
+                app.featureDiscovery.__resetInfosStorage();
+            }
+            app.core.ui.toast("Paramètres enregistrés", "success");
+            app.ctrl.homeAction();
         }
     }
 });

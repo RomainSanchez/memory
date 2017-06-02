@@ -15,11 +15,10 @@ app.register({
         // ---------------------------------------------------------------------
         // ACTIONS
         // ---------------------------------------------------------------------
-        
+
         homeAction: function()  {
             app.core.ctrl.go('home',{}).then(function() {
                 app.core.history.add(app.ctrl.states.home);
-                app.featureDiscovery.showFeatureDiscovery();
             });
         }
 
@@ -49,7 +48,6 @@ app.register({
                 if (clearContent) {
                     app.core.ui.clearContent();
                     app.core.ui.displayContentLoading(true);
-                    app.featureDiscovery.hideFeatureDiscovery();
                 }
 
                 var compiled = Handlebars.compile(app.core.ui.templates[templateName].data);

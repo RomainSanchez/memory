@@ -6,13 +6,16 @@ var app = {
     // APPLICATION CORE MODULES
     core: {},
 
+    // APPLICATION READY STATE
+    isReady: false,
+
     // -------------------------------------------------------------------------
     // INIT APPLICATION AT LOAD TIME
     // -------------------------------------------------------------------------
 
     init: function() {
 
-        app.core.ui.displayContentLoading(true);
+        // app.core.ui.displayContentLoading(true);
 
         var host = null;
 
@@ -38,6 +41,7 @@ var app = {
         // SESSION STARTED
 
         $(document).on('session.started', function() {
+            app.core.ui.registerModulesTemplates();
             app.core.ui.initTemplates();
         });
 
@@ -48,7 +52,6 @@ var app = {
             app.core.ui.plugins.init();
             app.core.ui.init();
             app.ctrl.homeAction();
-
             app.ready();
         });
     },
@@ -64,5 +67,13 @@ var app = {
     register: function(component) {
         $.extend(true, app, component);
         return app;
+    },
+
+    // -------------------------------------------------------------------------
+    // CHECK IF MODULE EXISTS
+    // -------------------------------------------------------------------------
+
+    moduleExists: function(modulePath) {
+        return app.core.utils.deepFind(app,modulePath);
     }
 };

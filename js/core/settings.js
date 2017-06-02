@@ -22,10 +22,6 @@ app.register({
         },
 
         updateSettings: function (data) {
-
-            if (data.clearAllInfosMessages === true) {
-                app.featureDiscovery.__resetInfosStorage();
-            }
             app.core.ui.toast("Paramètres enregistrés", "success");
             app.ctrl.homeAction();
         }

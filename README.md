@@ -41,10 +41,11 @@ $ cp ./LiftJS/data/parameters.json.dist ./parameters.json
 ```js
 // parameters.json
 {
-    "debug": true, // Set to false for prod env
+    "liftJsPath":"LiftJs/", // The web path to liftJs install dir
     "applicationName":"LiftJs", // The name that will be set in title and navbar
     "clientSessionName": "liftJs", // storage key (sessionStorage / localStorage)
-    "appUriPrefix": "" // Prefix used for applications URLs : e.g : #/ or ?/ or empty
+    "appUriPrefix": "", // Prefix used for applications URLs : e.g : #/ or ?/ or empty
+    "debug": true // Set to false for prod env
 }
 ```
 
@@ -101,8 +102,9 @@ Add the LiftJS app starter script
 
 Include LiftJS core templates in your `index.html`.
 
-You have 2 options:
+You have 3 options:
 
+-   Let the module include the template automatically.
 -   Include a template in `div` with class `.content`. The template will be cleared after calling `app.core.ctrl.go(templateName,data)` and `app.core.ctrl.render(templateName,data,true)`.
 -   Include a template in `div` with id `#app`. The template won't be cleared after calling `app.core.ctrl.go(templateName,data)` and `app.core.ctrl.render(templateName,data,true)`.
 
@@ -111,14 +113,10 @@ You have 2 options:
 ```html
 <div id="app">
 
-    <handlebars-template name="navbar" src="/LiftJS/views/blocks/navbar.html"></handlebars-template>
-
     <div class="content">
 
         <!-- OVERRIDEN HOME VIEW -->
-        <handlebars-template name="home" src="views/home.html"></handlebars-template>
-
-        <handlebars-template name="settings" src="LiftJs/views/pages/settings.html"></handlebars-template>
+        <handlebars-template name="home" src="views/home.html" override="true"></handlebars-template>
 
     </div>
 
@@ -278,6 +276,23 @@ app.register({
 ```
 
 Your `app.myModule.initPlugins()` function will be called when all templates will be registered (event `templates.registered`), a template is applied (event `templates.applied`) or a popstate is applied (via navigator history, event `history.popedstate`)
+
+### Custom module templates
+
+You can register template with the function `registerTemplates`. Use ui function `app.core.ui.addTemplate(type, name, src);` to add a template (src will be prefixed with parameter `liftJsPath`).
+
+```js
+app.register({
+    myModule: {
+        registerTemplates: function() {
+            // Adds a global view / block
+            app.core.ui.addTemplate('app', 'myGlobalView', 'js/modules/myModule/views/myGlobalView.html');
+            // Adds a content view (will be cleared when changing page)
+            app.core.ui.addTemplate('content', 'myContentView', 'js/modules/myModule/views/myContentView.html');
+        },
+    }
+});
+```
 
 ### Module and application override
 

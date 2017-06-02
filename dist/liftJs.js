@@ -6,13 +6,16 @@ var app = {
     // APPLICATION CORE MODULES
     core: {},
 
+    // APPLICATION READY STATE
+    isReady: false,
+
     // -------------------------------------------------------------------------
     // INIT APPLICATION AT LOAD TIME
     // -------------------------------------------------------------------------
 
     init: function() {
 
-        app.core.ui.displayContentLoading(true);
+        // app.core.ui.displayContentLoading(true);
 
         var host = null;
 
@@ -38,6 +41,7 @@ var app = {
         // SESSION STARTED
 
         $(document).on('session.started', function() {
+            app.core.ui.registerModulesTemplates();
             app.core.ui.initTemplates();
         });
 
@@ -48,7 +52,6 @@ var app = {
             app.core.ui.plugins.init();
             app.core.ui.init();
             app.ctrl.homeAction();
-
             app.ready();
         });
     },
@@ -64,6 +67,14 @@ var app = {
     register: function(component) {
         $.extend(true, app, component);
         return app;
+    },
+
+    // -------------------------------------------------------------------------
+    // CHECK IF MODULE EXISTS
+    // -------------------------------------------------------------------------
+
+    moduleExists: function(modulePath) {
+        return app.core.utils.deepFind(app,modulePath);
     }
 };
 
@@ -84,11 +95,10 @@ app.register({
         // ---------------------------------------------------------------------
         // ACTIONS
         // ---------------------------------------------------------------------
-        
+
         homeAction: function()  {
             app.core.ctrl.go('home',{}).then(function() {
                 app.core.history.add(app.ctrl.states.home);
-                app.featureDiscovery.showFeatureDiscovery();
             });
         }
 
@@ -118,7 +128,6 @@ app.register({
                 if (clearContent) {
                     app.core.ui.clearContent();
                     app.core.ui.displayContentLoading(true);
-                    app.featureDiscovery.hideFeatureDiscovery();
                 }
 
                 var compiled = Handlebars.compile(app.core.ui.templates[templateName].data);
@@ -136,11 +145,21 @@ app.register({
         }
     }
 });
+
 app.register({
     core: {
         events: {
             init: function() {
                 $(document)
+
+                    // -------------------------------------------------------------
+                    // APPLICATION READY
+                    // -------------------------------------------------------------
+
+                    .on('app.ready', function(e) {
+                        app.isReady = true;
+                        app.core.ui.displayContentLoading(false);
+                    })
 
                     // -------------------------------------------------------------
                     // NAV BUTTONS
@@ -190,11 +209,13 @@ app.register({
                     // -------------------------------------------------------------
 
                     .ajaxStart(function() {
-                        app.core.ui.displayContentLoading();
+                        if (app.isReady)
+                            app.core.ui.displayContentLoading();
                     })
 
                     .ajaxStop(function() {
-                        app.core.ui.displayContentLoading(false);
+                        if (app.isReady)
+                            app.core.ui.displayContentLoading(false);
                     })
 
                     // -------------------------------------------------------------
@@ -211,7 +232,8 @@ app.register({
                     // -------------------------------------------------------------
 
                     .on('template.applied', function() {
-                        app.core.ui.displayContentLoading(false);
+                        if (app.isReady)
+                            app.core.ui.displayContentLoading(false);
                         app.core.ui.plugins.init();
                         if ($('handlebar-placeholder[template="' + name + '"]').find('form').length > 0) {
                             Materialize.updateTextFields();
@@ -225,6 +247,12 @@ app.register({
                     })
 
                 ;
+
+                if (app.config.debug === true) {
+                    window.onerror = function(msg, url, line, col, error) {
+                        app.core.ui.toast('DEBUG: ' + msg + "<br/>" + url + ":" + line + ":" + col, 'error');
+                    }
+                }
 
                 app.core.events.registerComponentEvents(app);
             },
@@ -298,7 +326,7 @@ app.register({
             // ---------------------------------------------------------------------
 
             initEvents: function() {
-                
+
                 // -----------------------------------------------------------------
                 // HISTORY POP
                 // -----------------------------------------------------------------
@@ -318,7 +346,6 @@ app.register({
                     .on('history.popedstate', function() {
                         app.core.ui.plugins.init();
                         $('.dropdown-button').dropdown('close');
-                        app.featureDiscovery.showFeatureDiscovery();
                     });
             }
         }
@@ -449,10 +476,6 @@ app.register({
         },
 
         updateSettings: function (data) {
-
-            if (data.clearAllInfosMessages === true) {
-                app.featureDiscovery.__resetInfosStorage();
-            }
             app.core.ui.toast("Paramètres enregistrés", "success");
             app.ctrl.homeAction();
         }
@@ -466,7 +489,7 @@ app.register({
             // HANDLE APPLICATION TEMPLATES
             templates: {},
 
-            init: function () {
+            init: function() {
                 $(document).trigger('ui.init');
             },
 
@@ -474,7 +497,7 @@ app.register({
             // UI GLOBAL EVENTS
             // -------------------------------------------------------------------------
 
-            initEvents: function () {
+            initEvents: function() {
 
             },
 
@@ -483,7 +506,7 @@ app.register({
             // -------------------------------------------------------------------------
 
             plugins: {
-                init: function () {
+                init: function() {
                     moment.locale('fr');
                     app.core.ui.setApplicationName();
                     app.core.ui.plugins.initTabs();
@@ -496,7 +519,7 @@ app.register({
                 // MATERIALIZECSS TABS
                 // ---------------------------------------------------------------------
 
-                initTabs: function () {
+                initTabs: function() {
                     $('ul#tabs').tabs();
                     var tabsId = $('div.tab-content:first-of-type').attr('id');
                     $('ul#tabs').tabs('select_tab', tabsId);
@@ -506,7 +529,7 @@ app.register({
                 // MATERIALIZECSS TOOLTIPS
                 // ---------------------------------------------------------------------
 
-                initTooltips: function () {
+                initTooltips: function() {
                     $('.material-tooltip').remove();
                     $('*[data-tooltip]').tooltip({
                         delay: 50
@@ -517,7 +540,7 @@ app.register({
                 // MATERIALIZECSS DROPDOWN
                 // ---------------------------------------------------------------------
 
-                initDropDown: function () {
+                initDropDown: function() {
                     $('.dropdown-button').dropdown();
                 },
 
@@ -525,7 +548,7 @@ app.register({
                 // INITIALIZE COMPONENTS PLUGINS
                 // ---------------------------------------------------------------------
 
-                registerComponentPlugins: function (component, deep) {
+                registerComponentPlugins: function(component, deep) {
                     if (!isDefined(deep))
                         deep = 0;
 
@@ -533,7 +556,7 @@ app.register({
                         return;
 
                     // RECURSION OVER APPLICATION COMPONENTS
-                    Object.keys(component).forEach(function (key) {
+                    Object.keys(component).forEach(function(key) {
                         var c = component[key];
                         if (c && c.hasOwnProperty('initPlugins')) {
                             c.initPlugins();
@@ -548,7 +571,7 @@ app.register({
             // SETS APP NAME IN NAVBAR AND PAGE TITLE
             // -------------------------------------------------------------------------
 
-            setApplicationName: function () {
+            setApplicationName: function() {
                 var appName = app.config.applicationName;
 
                 document.title = appName;
@@ -556,15 +579,42 @@ app.register({
             },
 
             // -------------------------------------------------------------------------
+            // CALL MODULES SELF TEMPLATES REGISTER
+            // -------------------------------------------------------------------------
+
+            registerModulesTemplates: function(component, deep) {
+                if (!isDefined(component))
+                    component = app;
+
+                if (!isDefined(deep))
+                    deep = 0;
+
+                if (deep > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
+                    return;
+
+                // RECURSION OVER APPLICATION COMPONENTS
+                Object.keys(component).forEach(function(key) {
+                    var c = component[key];
+                    if (c !== null) {
+                        if (c && c.hasOwnProperty('registerTemplates')) {
+                            c.registerTemplates();
+                        } else if (typeof c === "object") {
+                            app.core.ui.registerModulesTemplates(c, deep + 1);
+                        }
+                    }
+                });
+            },
+
+            // -------------------------------------------------------------------------
             // LOOP LOADING HANDLEBARS TEMPLATES
             // -------------------------------------------------------------------------
 
-            initTemplates: function () {
+            initTemplates: function() {
                 var promises = [];
 
                 // FETCH TEMPLATES
 
-                $('handlebars-template').each(function () {
+                $('handlebars-template').each(function() {
                     var defer = $.Deferred();
                     var tpl = $(this);
                     var id = tpl.attr('name');
@@ -576,7 +626,7 @@ app.register({
                         $.ajax({
                             async: true,
                             url: src,
-                            success: function (data) {
+                            success: function(data) {
 
                                 // REGISTER TEMPLATE
 
@@ -606,18 +656,45 @@ app.register({
                     }
                 });
 
-                $.when.apply($, promises).then(function () {
+                $.when.apply($, promises).then(function() {
                     $(document).trigger('templates.registered');
-                }, function (e) {
+                }, function(e) {
                     $(document).trigger('app.failed');
                 });
+            },
+
+            addTemplate: function(type, name, src) {
+                var target = $('#app');
+                var action = 'prepend';
+
+                if (type === "content") {
+                    target = target.find('.content');
+                    action = 'append';
+                }
+
+                // REMOVE TEMPLATE IF ALREADY PRESENT IN BODY
+                var existing = target.find('handlebars-template[name="' + name + '"]');
+                if (existing.length != 0 && existing.attr('override') !== 'true') {
+                    existing.remove();
+                    delete app.core.ui.templates[name];
+                }
+
+                if (existing.attr('override') !== 'true') {
+                    // ADDING TEMPLATE IN BODY
+                    target[action](
+                        $('<handlebars-template/>').attr({
+                            name: name,
+                            src: app.config.liftJsPath + src
+                        })
+                    );
+                }
             },
 
             // -------------------------------------------------------------------------
             // APPLY COMPILED TEMPLATE
             // -------------------------------------------------------------------------
 
-            applyTemplate: function (name, tpl) {
+            applyTemplate: function(name, tpl) {
                 if (!isDefined(tpl) && app.core.ui.templates.hasOwnProperty(name))
                     tpl = app.core.ui.templates[name].data;
                 $('handlebars-template[name="' + name + '"]').html(tpl);
@@ -628,15 +705,16 @@ app.register({
             // CLEAR .CONTENT PLACEHOLDERS
             // -------------------------------------------------------------------------
 
-            clearContent: function () {
+            clearContent: function() {
                 $('#app div.content handlebars-template').html('');
+                $(document).trigger('content.cleared');
             },
 
             // -------------------------------------------------------------------------
             // SHOW BIG LOADER IN CONTENT
             // -------------------------------------------------------------------------
 
-            displayContentLoading: function (show) {
+            displayContentLoading: function(show) {
                 if (!isDefined(show))
                     show = true;
                 var loader = $('#contentLoader');
@@ -651,7 +729,7 @@ app.register({
             // SHOW TOAST (FLASH MESSAGE)
             // -------------------------------------------------------------------------
 
-            toast: function (message, type, delay) {
+            toast: function(message, type, delay) {
                 if (!isDefined(delay))
                     delay = 5000;
                 if (!isDefined(type))

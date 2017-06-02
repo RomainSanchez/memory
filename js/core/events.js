@@ -5,6 +5,15 @@ app.register({
                 $(document)
 
                     // -------------------------------------------------------------
+                    // APPLICATION READY
+                    // -------------------------------------------------------------
+
+                    .on('app.ready', function(e) {
+                        app.isReady = true;
+                        app.core.ui.displayContentLoading(false);
+                    })
+
+                    // -------------------------------------------------------------
                     // NAV BUTTONS
                     // -------------------------------------------------------------
 
@@ -52,11 +61,13 @@ app.register({
                     // -------------------------------------------------------------
 
                     .ajaxStart(function() {
-                        app.core.ui.displayContentLoading();
+                        if (app.isReady)
+                            app.core.ui.displayContentLoading();
                     })
 
                     .ajaxStop(function() {
-                        app.core.ui.displayContentLoading(false);
+                        if (app.isReady)
+                            app.core.ui.displayContentLoading(false);
                     })
 
                     // -------------------------------------------------------------
@@ -73,7 +84,8 @@ app.register({
                     // -------------------------------------------------------------
 
                     .on('template.applied', function() {
-                        app.core.ui.displayContentLoading(false);
+                        if (app.isReady)
+                            app.core.ui.displayContentLoading(false);
                         app.core.ui.plugins.init();
                         if ($('handlebar-placeholder[template="' + name + '"]').find('form').length > 0) {
                             Materialize.updateTextFields();
@@ -87,6 +99,12 @@ app.register({
                     })
 
                 ;
+
+                if (app.config.debug === true) {
+                    window.onerror = function(msg, url, line, col, error) {
+                        app.core.ui.toast('DEBUG: ' + msg + "<br/>" + url + ":" + line + ":" + col, 'error');
+                    }
+                }
 
                 app.core.events.registerComponentEvents(app);
             },

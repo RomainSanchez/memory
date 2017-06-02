@@ -42,7 +42,7 @@ app.register({
             // ---------------------------------------------------------------------
 
             initEvents: function() {
-                
+
                 // -----------------------------------------------------------------
                 // HISTORY POP
                 // -----------------------------------------------------------------
@@ -62,7 +62,6 @@ app.register({
                     .on('history.popedstate', function() {
                         app.core.ui.plugins.init();
                         $('.dropdown-button').dropdown('close');
-                        app.featureDiscovery.showFeatureDiscovery();
                     });
             }
         }

@@ -1,6 +1,7 @@
 {
-    "debug": true,
+    "liftJsPath": "/",
     "applicationName":"LiftJs",
     "clientSessionName": "liftJs",
-    "appUriPrefix": ""
+    "appUriPrefix": "",
+    "debug": false
 }

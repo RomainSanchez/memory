@@ -209,8 +209,6 @@ app.register({
                         user: app.core.session.user
                     }).then(function () {
                         app.core.history.add(app.ctrl.states.showUserProfile);
-                        app.featureDiscovery.showFeatureDiscovery('info-eventButton');
-                        app.featureDiscovery.showFeatureDiscovery('info-profileActionsButton');
                     });
                 });
             } else {

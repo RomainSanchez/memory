@@ -7029,7 +7029,6 @@ html {
     color: #3685b6; }
   body #contentLoader,
   html #contentLoader {
-    display: none;
     width: 150px;
     height: 150px;
     margin: 0 auto;
