@@ -50,8 +50,8 @@ html {
             li {
                 a {
                     &:hover,
-                        &:active {
-                        background-color:darken($primary-color,5%);
+                    &:active {
+                        background-color:$primary-color;
                     }
                 }
             }
