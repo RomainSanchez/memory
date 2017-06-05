@@ -40,7 +40,7 @@ app.register({
 
                 $(document).trigger('ctrl.prerender');
 
-                if (!isDefined(data))
+                if (!isDefined(data) || data === null)
                     data = {};
                 if (!isDefined(clearContent))
                     clearContent = false;

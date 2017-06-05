@@ -64,6 +64,15 @@ app.register({
                     return app.core.utils.deepFind(app.config, path);
                 });
 
+                // -----------------------------------------------------------------
+                // RENDER TEMPLATE INSIDE ANOTHER ONE
+                // -----------------------------------------------------------------
+
+                Handlebars.registerHelper('render', function(name,data) {
+                    var compiled = Handlebars.compile(app.core.ui.templates[name].data);
+                    return compiled(data);
+                });
+
             },
 
             // ---------------------------------------------------------------------

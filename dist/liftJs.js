@@ -120,7 +120,7 @@ app.register({
 
                 $(document).trigger('ctrl.prerender');
 
-                if (!isDefined(data))
+                if (!isDefined(data) || data === null)
                     data = {};
                 if (!isDefined(clearContent))
                     clearContent = false;
@@ -827,6 +827,15 @@ app.register({
 
                 Handlebars.registerHelper('config', function(path) {
                     return app.core.utils.deepFind(app.config, path);
+                });
+
+                // -----------------------------------------------------------------
+                // RENDER TEMPLATE INSIDE ANOTHER ONE
+                // -----------------------------------------------------------------
+
+                Handlebars.registerHelper('render', function(name,data) {
+                    var compiled = Handlebars.compile(app.core.ui.templates[name].data);
+                    return compiled(data);
                 });
 
             },
