@@ -64,11 +64,11 @@ app.register({
                 // INITIALIZE COMPONENTS PLUGINS
                 // ---------------------------------------------------------------------
 
-                registerComponentPlugins: function(component, deep) {
-                    if (!isDefined(deep))
-                        deep = 0;
+                registerComponentPlugins: function(component, depth) {
+                    if (!isDefined(depth))
+                        depth = 0;
 
-                    if (deep > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
+                    if (depth > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
                         return;
 
                     // RECURSION OVER APPLICATION COMPONENTS
@@ -77,7 +77,7 @@ app.register({
                         if (c && c.hasOwnProperty('initPlugins')) {
                             c.initPlugins();
                         } else if (typeof c === "object") {
-                            app.core.ui.plugins.registerComponentPlugins(c, ++deep);
+                            app.core.ui.plugins.registerComponentPlugins(c, depth + 1);
                         }
                     });
                 }
@@ -98,14 +98,14 @@ app.register({
             // CALL MODULES SELF TEMPLATES REGISTER
             // -------------------------------------------------------------------------
 
-            registerModulesTemplates: function(component, deep) {
+            registerModulesTemplates: function(component, depth) {
                 if (!isDefined(component))
                     component = app;
 
-                if (!isDefined(deep))
-                    deep = 0;
+                if (!isDefined(depth))
+                    depth = 0;
 
-                if (deep > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
+                if (depth > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
                     return;
 
                 // RECURSION OVER APPLICATION COMPONENTS
@@ -115,7 +115,7 @@ app.register({
                         if (c && c.hasOwnProperty('registerTemplates')) {
                             c.registerTemplates();
                         } else if (typeof c === "object") {
-                            app.core.ui.registerModulesTemplates(c, deep + 1);
+                            app.core.ui.registerModulesTemplates(c, depth + 1);
                         }
                     }
                 });

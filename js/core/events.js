@@ -119,11 +119,11 @@ app.register({
             // INITIALIZE COMPONENTS EVENTS
             // ---------------------------------------------------------------------
 
-            registerComponentEvents: function(component, deep) {
-                if (!isDefined(deep))
-                    deep = 0;
+            registerComponentEvents: function(component, depth) {
+                if (!isDefined(depth))
+                    depth = 0;
 
-                if (deep > 4) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
+                if (depth > 4) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
                     return;
 
                 // RECURSION OVER APPLICATION COMPONENTS
@@ -132,7 +132,7 @@ app.register({
                     if (isDefined(c) && c.hasOwnProperty('initEvents')) {
                         c.initEvents();
                     } else if (typeof c === "object") {
-                        app.core.events.registerComponentEvents(c, ++deep);
+                        app.core.events.registerComponentEvents(c, depth + 1);
                     }
                 });
             }
