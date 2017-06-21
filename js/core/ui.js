@@ -153,7 +153,7 @@ app.register({
                                     data: data,
                                     element: tpl
                                 };
-                                
+
                                 $(document).trigger('template.registered', [app.core.ui.templates[id]]);
 
                                 defer.resolve();
@@ -224,7 +224,7 @@ app.register({
             // RETURN COMPILED TEMPLATE
             // -------------------------------------------------------------------------
 
-            renderTemplate: function() {
+            renderTemplate: function(name, data) {
               if(undefined !== app.core.ui.templates[name]) {
                 var compiled = Handlebars.compile(app.core.ui.templates[name].data);
 
