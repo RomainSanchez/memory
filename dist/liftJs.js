@@ -48,7 +48,6 @@ var app = {
         // ALL TEMPLATES LOADED
 
         $(document).on('templates.registered', function() {
-            app.core.ui.applyTemplate('navbar');
             app.core.ui.plugins.init();
             app.core.ui.init();
             app.ctrl.homeAction();
@@ -130,9 +129,7 @@ app.register({
                     app.core.ui.displayContentLoading(true);
                 }
 
-                var compiled = Handlebars.compile(app.core.ui.templates[templateName].data);
-
-                app.core.ui.applyTemplate(templateName, compiled(data));
+                app.core.ui.applyTemplate(templateName, data);
 
                 $('.dropdown-button').dropdown('close');
 
@@ -267,11 +264,11 @@ app.register({
             // INITIALIZE COMPONENTS EVENTS
             // ---------------------------------------------------------------------
 
-            registerComponentEvents: function(component, deep) {
-                if (!isDefined(deep))
-                    deep = 0;
+            registerComponentEvents: function(component, depth) {
+                if (!isDefined(depth))
+                    depth = 0;
 
-                if (deep > 4) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
+                if (depth > 4) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
                     return;
 
                 // RECURSION OVER APPLICATION COMPONENTS
@@ -280,13 +277,14 @@ app.register({
                     if (isDefined(c) && c.hasOwnProperty('initEvents')) {
                         c.initEvents();
                     } else if (typeof c === "object") {
-                        app.core.events.registerComponentEvents(c, ++deep);
+                        app.core.events.registerComponentEvents(c, depth + 1);
                     }
                 });
             }
         }
     }
 });
+
 app.register({
     core: {
         history: {
@@ -553,22 +551,24 @@ app.register({
                 // INITIALIZE COMPONENTS PLUGINS
                 // ---------------------------------------------------------------------
 
-                registerComponentPlugins: function(component, deep) {
-                    if (!isDefined(deep))
-                        deep = 0;
+                registerComponentPlugins: function(component, depth) {
+                    if (!isDefined(depth))
+                        depth = 0;
 
-                    if (deep > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
+                    if (depth > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
                         return;
 
                     // RECURSION OVER APPLICATION COMPONENTS
-                    Object.keys(component).forEach(function(key) {
-                        var c = component[key];
-                        if (c && c.hasOwnProperty('initPlugins')) {
-                            c.initPlugins();
-                        } else if (typeof c === "object") {
-                            app.core.ui.plugins.registerComponentPlugins(c, ++deep);
-                        }
-                    });
+                    if(typeof component === Object) {
+                      Object.keys(component).forEach(function(key) {
+                          var c = component[key];
+                          if (c && c.hasOwnProperty('initPlugins')) {
+                              c.initPlugins();
+                          } else if (typeof c === "object") {
+                              app.core.ui.plugins.registerComponentPlugins(c, depth + 1);
+                          }
+                      });
+                    }
                 }
             },
 
@@ -587,14 +587,14 @@ app.register({
             // CALL MODULES SELF TEMPLATES REGISTER
             // -------------------------------------------------------------------------
 
-            registerModulesTemplates: function(component, deep) {
+            registerModulesTemplates: function(component, depth) {
                 if (!isDefined(component))
                     component = app;
 
-                if (!isDefined(deep))
-                    deep = 0;
+                if (!isDefined(depth))
+                    depth = 0;
 
-                if (deep > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
+                if (depth > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
                     return;
 
                 // RECURSION OVER APPLICATION COMPONENTS
@@ -604,7 +604,7 @@ app.register({
                         if (c && c.hasOwnProperty('registerTemplates')) {
                             c.registerTemplates();
                         } else if (typeof c === "object") {
-                            app.core.ui.registerModulesTemplates(c, deep + 1);
+                            app.core.ui.registerModulesTemplates(c, depth + 1);
                         }
                     }
                 });
@@ -699,11 +699,26 @@ app.register({
             // APPLY COMPILED TEMPLATE
             // -------------------------------------------------------------------------
 
-            applyTemplate: function(name, tpl) {
-                if (!isDefined(tpl) && app.core.ui.templates.hasOwnProperty(name))
-                    tpl = app.core.ui.templates[name].data;
-                $('handlebars-template[name="' + name + '"]').html(tpl);
+            applyTemplate: function(name, data) {
+                $('handlebars-template[name="' + name + '"]').html(
+                  app.core.ui.renderTemplate(name, data)
+                );
+
                 $(document).trigger('template.applied', [name]);
+            },
+
+            // -------------------------------------------------------------------------
+            // RETURN COMPILED TEMPLATE
+            // -------------------------------------------------------------------------
+
+            renderTemplate: function(name, data) {
+              if(undefined !== app.core.ui.templates[name]) {
+                var compiled = Handlebars.compile(app.core.ui.templates[name].data);
+
+                return compiled(data);
+              }
+
+              return false;
             },
 
             // -------------------------------------------------------------------------
@@ -763,6 +778,7 @@ app.register({
         }
     }
 });
+
 app.register({
     core: {
         utils: {
@@ -834,8 +850,7 @@ app.register({
                 // -----------------------------------------------------------------
 
                 Handlebars.registerHelper('render', function(name,data) {
-                    var compiled = Handlebars.compile(app.core.ui.templates[name].data);
-                    return compiled(data);
+                  app.core.ui.renderTemplate(name, data);
                 });
 
             },
@@ -902,6 +917,12 @@ app.register({
                     }
                 }
                 return current;
+            },
+            uuidV1: function(prefix) {
+              return prefix + uuid.v1();
+            },
+            uuidV4: function(prefix) {
+              return prefix + uuid.v4();
             }
         }
     }
