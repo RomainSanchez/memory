@@ -150,6 +150,11 @@ app.register({
             },
             uuidV4: function(prefix) {
               return prefix + uuid.v4();
+            },
+            mergeArrays: function(array1, array2) {
+              return array1.concat(array2.filter(function (item) {
+                return array1.indexOf(item) === -1;
+              }));
             }
         }
     }
