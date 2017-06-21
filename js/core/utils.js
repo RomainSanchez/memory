@@ -69,8 +69,7 @@ app.register({
                 // -----------------------------------------------------------------
 
                 Handlebars.registerHelper('render', function(name,data) {
-                    var compiled = Handlebars.compile(app.core.ui.templates[name].data);
-                    return compiled(data);
+                  app.core.ui.renderTemplate(name, data);
                 });
 
             },

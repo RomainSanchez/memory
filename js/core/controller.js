@@ -50,9 +50,7 @@ app.register({
                     app.core.ui.displayContentLoading(true);
                 }
 
-                var compiled = Handlebars.compile(app.core.ui.templates[templateName].data);
-
-                app.core.ui.applyTemplate(templateName, compiled(data));
+                app.core.ui.applyTemplate(templateName, data);
 
                 $('.dropdown-button').dropdown('close');
 

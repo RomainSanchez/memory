@@ -72,14 +72,16 @@ app.register({
                         return;
 
                     // RECURSION OVER APPLICATION COMPONENTS
-                    Object.keys(component).forEach(function(key) {
-                        var c = component[key];
-                        if (c && c.hasOwnProperty('initPlugins')) {
-                            c.initPlugins();
-                        } else if (typeof c === "object") {
-                            app.core.ui.plugins.registerComponentPlugins(c, depth + 1);
-                        }
-                    });
+                    if(typeof component === Object) {
+                      Object.keys(component).forEach(function(key) {
+                          var c = component[key];
+                          if (c && c.hasOwnProperty('initPlugins')) {
+                              c.initPlugins();
+                          } else if (typeof c === "object") {
+                              app.core.ui.plugins.registerComponentPlugins(c, depth + 1);
+                          }
+                      });
+                    }
                 }
             },
 
@@ -151,7 +153,7 @@ app.register({
                                     data: data,
                                     element: tpl
                                 };
-
+                                
                                 $(document).trigger('template.registered', [app.core.ui.templates[id]]);
 
                                 defer.resolve();
@@ -210,11 +212,26 @@ app.register({
             // APPLY COMPILED TEMPLATE
             // -------------------------------------------------------------------------
 
-            applyTemplate: function(name, tpl) {
-                if (!isDefined(tpl) && app.core.ui.templates.hasOwnProperty(name))
-                    tpl = app.core.ui.templates[name].data;
-                $('handlebars-template[name="' + name + '"]').html(tpl);
+            applyTemplate: function(name, data) {
+                $('handlebars-template[name="' + name + '"]').html(
+                  app.core.ui.renderTemplate(name, data)
+                );
+
                 $(document).trigger('template.applied', [name]);
+            },
+
+            // -------------------------------------------------------------------------
+            // RETURN COMPILED TEMPLATE
+            // -------------------------------------------------------------------------
+
+            renderTemplate: function() {
+              if(undefined !== app.core.ui.templates[name]) {
+                var compiled = Handlebars.compile(app.core.ui.templates[name].data);
+
+                return compiled(data);
+              }
+
+              return false;
             },
 
             // -------------------------------------------------------------------------
