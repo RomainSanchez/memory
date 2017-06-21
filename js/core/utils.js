@@ -136,6 +136,12 @@ app.register({
                     }
                 }
                 return current;
+            },
+            uuidV1: function(prefix) {
+              return prefix + uuid.v1();
+            },
+            uuidV4: function(prefix) {
+              return prefix + uuid.v4();
             }
         }
     }
