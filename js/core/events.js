@@ -129,9 +129,10 @@ app.register({
                 // RECURSION OVER APPLICATION COMPONENTS
                 Object.keys(component).forEach(function(key) {
                     var c = component[key];
-                    if (isDefined(c) && c.hasOwnProperty('initEvents')) {
+
+                    if (isDefined(c) && c && c.hasOwnProperty('initEvents')) {
                         c.initEvents();
-                    } else if (typeof c === "object") {
+                    } else if (c && typeof c === "object") {
                         app.core.events.registerComponentEvents(c, depth + 1);
                     }
                 });
