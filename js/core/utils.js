@@ -72,6 +72,14 @@ app.register({
                   app.core.ui.renderTemplate(name, data);
                 });
 
+                // -----------------------------------------------------------------
+                // RENDER TEMPLATE INSIDE ANOTHER ONE
+                // -----------------------------------------------------------------
+
+                Handlebars.registerHelper('dump', function(variable) {
+                  console.debug(variable);
+                });
+
             },
 
             // ---------------------------------------------------------------------
