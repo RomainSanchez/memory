@@ -10,6 +10,7 @@ app.register({
                 .on('app.ready', function() {
                     app.ctrl.homeAction();
                 })
+            ;
         },
         registerTemplates: function() {
             app.core.ui.addTemplate('app', 'navbar', app.config.liftJsPath+'js/modules/baseUi/views/navbar.html');
@@ -26,12 +27,12 @@ app.register({
                 endingTop: '10%',
             };
 
-            $.extend({}, defaults, options);
+            options = $.extend({}, defaults, options);
 
             var open = function() {
               var modal = $('.modal');
 
-              modal.modal();
+              modal.modal(options);
 
               if(!modal.hasClass('open')) {
                   modal.modal('open');
