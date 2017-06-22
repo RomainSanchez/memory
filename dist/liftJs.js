@@ -50,8 +50,8 @@ var app = {
         $(document).on('templates.registered', function() {
             app.core.ui.plugins.init();
             app.core.ui.init();
-            app.ctrl.homeAction();
             app.ready();
+            app.ctrl.homeAction();
         });
     },
 
@@ -208,20 +208,6 @@ app.register({
                     })
 
                     // -------------------------------------------------------------
-                    // AJAX SPINNER
-                    // -------------------------------------------------------------
-
-                    .ajaxStart(function() {
-                        if (app.isReady)
-                            app.core.ui.displayContentLoading();
-                    })
-
-                    .ajaxStop(function() {
-                        if (app.isReady)
-                            app.core.ui.displayContentLoading(false);
-                    })
-
-                    // -------------------------------------------------------------
                     // GLOBAL BEHAVIORS
                     // -------------------------------------------------------------
 
@@ -238,7 +224,8 @@ app.register({
                         if (app.isReady)
                             app.core.ui.displayContentLoading(false);
                         app.core.ui.plugins.init();
-                        if ($('handlebars-template[name="' + name + '"]').find('form').length > 0) {
+                        var forms = $('handlebars-template[name="' + name + '"]').find('form');
+                        if (forms.length > 0 && forms.is(':visible')) {
                             Materialize.updateTextFields();
                         }
                     })
@@ -274,9 +261,10 @@ app.register({
                 // RECURSION OVER APPLICATION COMPONENTS
                 Object.keys(component).forEach(function(key) {
                     var c = component[key];
-                    if (isDefined(c) && c.hasOwnProperty('initEvents')) {
+
+                    if (isDefined(c) && c && c.hasOwnProperty('initEvents')) {
                         c.initEvents();
-                    } else if (typeof c === "object") {
+                    } else if (c && typeof c === "object") {
                         app.core.events.registerComponentEvents(c, depth + 1);
                     }
                 });
@@ -559,15 +547,15 @@ app.register({
                         return;
 
                     // RECURSION OVER APPLICATION COMPONENTS
-                    if(typeof component === Object) {
-                      Object.keys(component).forEach(function(key) {
-                          var c = component[key];
-                          if (c && c.hasOwnProperty('initPlugins')) {
-                              c.initPlugins();
-                          } else if (typeof c === "object") {
-                              app.core.ui.plugins.registerComponentPlugins(c, depth + 1);
-                          }
-                      });
+                    if (typeof component === Object) {
+                        Object.keys(component).forEach(function(key) {
+                            var c = component[key];
+                            if (c && c.hasOwnProperty('initPlugins')) {
+                                c.initPlugins();
+                            } else if (typeof c === "object") {
+                                app.core.ui.plugins.registerComponentPlugins(c, depth + 1);
+                            }
+                        });
                     }
                 }
             },
@@ -600,12 +588,10 @@ app.register({
                 // RECURSION OVER APPLICATION COMPONENTS
                 Object.keys(component).forEach(function(key) {
                     var c = component[key];
-                    if (c !== null) {
-                        if (c && c.hasOwnProperty('registerTemplates')) {
-                            c.registerTemplates();
-                        } else if (typeof c === "object") {
-                            app.core.ui.registerModulesTemplates(c, depth + 1);
-                        }
+                    if (c && c.hasOwnProperty('registerTemplates')) {
+                        c.registerTemplates();
+                    } else if (c && typeof c === "object") {
+                        app.core.ui.registerModulesTemplates(c, depth + 1);
                     }
                 });
             },
@@ -701,7 +687,7 @@ app.register({
 
             applyTemplate: function(name, data) {
                 $('handlebars-template[name="' + name + '"]').html(
-                  app.core.ui.renderTemplate(name, data)
+                    app.core.ui.renderTemplate(name, data)
                 );
 
                 $(document).trigger('template.applied', [name]);
@@ -712,13 +698,13 @@ app.register({
             // -------------------------------------------------------------------------
 
             renderTemplate: function(name, data) {
-              if(undefined !== app.core.ui.templates[name]) {
-                var compiled = Handlebars.compile(app.core.ui.templates[name].data);
+                if (undefined !== app.core.ui.templates[name]) {
+                    var compiled = Handlebars.compile(app.core.ui.templates[name].data);
 
-                return compiled(data);
-              }
+                    return compiled(data);
+                }
 
-              return false;
+                return false;
             },
 
             // -------------------------------------------------------------------------
@@ -853,6 +839,14 @@ app.register({
                   app.core.ui.renderTemplate(name, data);
                 });
 
+                // -----------------------------------------------------------------
+                // RENDER TEMPLATE INSIDE ANOTHER ONE
+                // -----------------------------------------------------------------
+
+                Handlebars.registerHelper('dump', function(variable) {
+                  console.debug(variable);
+                });
+
             },
 
             // ---------------------------------------------------------------------
@@ -923,6 +917,11 @@ app.register({
             },
             uuidV4: function(prefix) {
               return prefix + uuid.v4();
+            },
+            mergeArrays: function(array1, array2) {
+              return array1.concat(array2.filter(function (item) {
+                return array1.indexOf(item) === -1;
+              }));
             }
         }
     }
