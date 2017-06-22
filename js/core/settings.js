@@ -16,7 +16,11 @@ app.register({
         showSettings: function () {
             app.core.history.currentCallable = app.ctrl.showSettings;
             app.core.ctrl.go('settings').then(function () {
-                Materialize.updateTextFields();
+                try {
+                    Materialize.updateTextFields();
+                } catch(e) {
+
+                }
                 app.core.history.add(app.ctrl.states.settings);
             });
         },

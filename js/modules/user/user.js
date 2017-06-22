@@ -224,7 +224,11 @@ app.register({
                         user: app.core.session.user
                     }).then(function () {
                         app.core.history.add(app.ctrl.states.editUserProfile);
-                        Materialize.updateTextFields();
+                        try {
+                            Materialize.updateTextFields();
+                        } catch(e) {
+
+                        }
                     });
                 });
             } else {
@@ -239,7 +243,11 @@ app.register({
                     app.core.ctrl.go('editUserPassword', {
                         user: app.core.session.user
                     }).then(function () {
-                        Materialize.updateTextFields();
+                        try {
+                            Materialize.updateTextFields();
+                        } catch(e) {
+
+                        }
                         app.core.history.add(app.ctrl.states.editUserPassword);
                     });
                 });
@@ -271,7 +279,11 @@ app.register({
                 app.core.history.currentCallable = app.ctrl.showSettings;
                 app.ws.getUser(app.core.session.user.id).then(function () {
                     app.core.ctrl.go('settings').then(function () {
-                        Materialize.updateTextFields();
+                        try {
+                            Materialize.updateTextFields();
+                        } catch(e) {
+
+                        }
                         app.core.history.add(app.ctrl.states.settings);
                     });
                 });

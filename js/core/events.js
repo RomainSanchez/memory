@@ -81,7 +81,11 @@ app.register({
                         app.core.ui.plugins.init();
                         var forms = $('handlebars-template[name="' + name + '"]').find('form');
                         if (forms.length > 0 && forms.is(':visible')) {
-                            Materialize.updateTextFields();
+                            try {
+                                Materialize.updateTextFields();
+                            } catch(e) {
+
+                            }
                         }
                     })
 

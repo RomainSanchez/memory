@@ -226,7 +226,11 @@ app.register({
                         app.core.ui.plugins.init();
                         var forms = $('handlebars-template[name="' + name + '"]').find('form');
                         if (forms.length > 0 && forms.is(':visible')) {
-                            Materialize.updateTextFields();
+                            try {
+                                Materialize.updateTextFields();
+                            } catch(e) {
+
+                            }
                         }
                     })
 
@@ -461,7 +465,11 @@ app.register({
         showSettings: function () {
             app.core.history.currentCallable = app.ctrl.showSettings;
             app.core.ctrl.go('settings').then(function () {
-                Materialize.updateTextFields();
+                try {
+                    Materialize.updateTextFields();
+                } catch(e) {
+
+                }
                 app.core.history.add(app.ctrl.states.settings);
             });
         },
