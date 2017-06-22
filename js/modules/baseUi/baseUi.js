@@ -12,8 +12,8 @@ app.register({
                 })
         },
         registerTemplates: function() {
-            app.core.ui.addTemplate('app', 'navbar', 'js/modules/baseUi/views/navbar.html');
-            app.core.ui.addTemplate('content', 'settings', 'js/modules/baseUi/views/settings.html');
+            app.core.ui.addTemplate('app', 'navbar', app.config.liftJsPath+'js/modules/baseUi/views/navbar.html');
+            app.core.ui.addTemplate('content', 'settings', app.config.liftJsPath+'js/modules/baseUi/views/settings.html');
         },
 
         openModal: function(templateName, data, options) {

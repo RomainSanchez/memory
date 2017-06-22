@@ -200,7 +200,7 @@ app.register({
                     target[action](
                         $('<handlebars-template/>').attr({
                             name: name,
-                            src: app.config.liftJsPath + src
+                            src: src
                         })
                     );
                 }
