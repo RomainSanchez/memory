@@ -51,7 +51,6 @@ var app = {
             app.core.ui.plugins.init();
             app.core.ui.init();
             app.ready();
-            app.ctrl.homeAction();
         });
     },
 

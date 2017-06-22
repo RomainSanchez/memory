@@ -1,9 +1,15 @@
 app.register({
     baseUi: {
-        initevents: function() {
-          $(document).on('templates.registered', function() {
-              app.core.ui.applyTemplate('navbar');
-          })
+        initEvents: function() {
+            $(document)
+
+                .on('templates.registered', function() {
+                    app.core.ui.applyTemplate('navbar');
+                })
+
+                .on('app.ready', function() {
+                    app.ctrl.homeAction();
+                })
         },
         registerTemplates: function() {
             app.core.ui.addTemplate('app', 'navbar', 'js/modules/baseUi/views/navbar.html');

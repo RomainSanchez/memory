@@ -59,7 +59,7 @@ app.register({
 
                         var formData = app.core.utils.formToObject($(this));
 
-                        callableAction(formData);
+                        callableAction(formData,$(this));
                     })
 
                     // -------------------------------------------------------------
@@ -86,12 +86,6 @@ app.register({
                             } catch(e) {
 
                             }
-                        }
-                    })
-
-                    .on('template.registered', function(e, template) {
-                        if (template.id === "infos") {
-                            app.core.ui.applyTemplate(template.id, template.data);
                         }
                     })
 
