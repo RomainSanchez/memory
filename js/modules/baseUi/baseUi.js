@@ -9,12 +9,11 @@ app.register({
 
                 .on('app.ready', function() {
                     app.ctrl.homeAction();
-                })
-            ;
+                });
         },
         registerTemplates: function() {
-            app.core.ui.addTemplate('app', 'navbar', app.config.liftJsPath+'js/modules/baseUi/views/navbar.html');
-            app.core.ui.addTemplate('content', 'settings', app.config.liftJsPath+'js/modules/baseUi/views/settings.html');
+            app.core.ui.addTemplate('app', 'navbar', app.config.liftJsPath + 'js/modules/baseUi/views/navbar.html');
+            app.core.ui.addTemplate('content', 'settings', app.config.liftJsPath + 'js/modules/baseUi/views/settings.html');
         },
 
         openModal: function(selector, templateName, data, options) {
@@ -30,16 +29,17 @@ app.register({
             options = $.extend({}, defaults, options);
 
             var open = function() {
-              var modal = $(selector+'.modal');
+                var modal = $(selector + '.modal');
 
-              modal.modal(options);
+                modal.modal(options);
 
-              if(!modal.hasClass('open')) {
-                  modal.modal('open');
-              }
+                if (!modal.hasClass('open')) {
+                    $(document).trigger('modal.open');
+                    modal.modal('open');
+                }
             }
 
-            if($(selector+'.modal').length == 0) {
+            if ($(selector + '.modal').length == 0) {
                 app.core.ctrl.render(templateName, data, false).then(open);
             } else {
                 open();
@@ -49,7 +49,7 @@ app.register({
         closeModal: function() {
             var modal = $('.modal');
 
-            if(modal.hasClass('open')) {
+            if (modal.hasClass('open')) {
                 modal.modal('close');
                 $('.modal').remove();
             }
