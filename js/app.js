@@ -50,8 +50,8 @@ var app = {
         $(document).on('templates.registered', function() {
             app.core.ui.plugins.init();
             app.core.ui.init();
-            app.ctrl.homeAction();
             app.ready();
+            app.ctrl.homeAction();
         });
     },
 

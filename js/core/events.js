@@ -63,20 +63,6 @@ app.register({
                     })
 
                     // -------------------------------------------------------------
-                    // AJAX SPINNER
-                    // -------------------------------------------------------------
-
-                    .ajaxStart(function() {
-                        if (app.isReady)
-                            app.core.ui.displayContentLoading();
-                    })
-
-                    .ajaxStop(function() {
-                        if (app.isReady)
-                            app.core.ui.displayContentLoading(false);
-                    })
-
-                    // -------------------------------------------------------------
                     // GLOBAL BEHAVIORS
                     // -------------------------------------------------------------
 
@@ -93,7 +79,8 @@ app.register({
                         if (app.isReady)
                             app.core.ui.displayContentLoading(false);
                         app.core.ui.plugins.init();
-                        if ($('handlebars-template[name="' + name + '"]').find('form').length > 0) {
+                        var forms = $('handlebars-template[name="' + name + '"]').find('form');
+                        if (forms.length > 0 && forms.is(':visible')) {
                             Materialize.updateTextFields();
                         }
                     })

@@ -29,7 +29,7 @@ app.register({
                     app.featureDiscovery.hideFeatureDiscovery();
                 })
                 .on('ctrl.aftergo, history.popedstate, ctrl.postrender', function() {
-                    app.featureDiscovery.showFeatureDiscovery();
+                    //app.featureDiscovery.showFeatureDiscovery();
                 })
 
             ;
