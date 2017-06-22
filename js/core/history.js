@@ -7,7 +7,7 @@ app.register({
 
             // HOLDS CURRENT VIEW CALLABLE (USED FOR RECALL)
             currentCallable: function() {
-                //                app.ctrl.homeAction();
+                // app.ctrl.homeAction();
             },
 
             // WRAPPER BROWSER HISTORY
@@ -35,6 +35,13 @@ app.register({
 
                     app.core.history.currentState = state;
                 }
+            },
+
+            readUrl: function() {
+                // WIP
+                var uri = window.location.pathname;
+
+                console.info(app.config.appUriPrefix + uri);
             },
 
             // ---------------------------------------------------------------------

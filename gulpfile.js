@@ -41,6 +41,10 @@ gulp.task('watch', function() {
     gulp.watch('./**/*', ['livereload']);
 });
 
+gulp.task('watchonly', function() {
+    gulp.watch('./js/**/*',['build']);
+});
+
 // -----------------------------------------------------------
 // BUILDING LIB
 // -----------------------------------------------------------
@@ -105,3 +109,5 @@ gulp.task('dist-copy-libs', function() {
 gulp.task('default', ['connect', 'sass', 'watch']);
 
 gulp.task('build', ['dist-sass', 'dist-compress-main', 'dist-compress-modules', 'dist-copy-libs']);
+
+gulp.task('livebuild', ['watchonly']);
