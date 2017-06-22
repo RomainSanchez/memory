@@ -10,7 +10,14 @@ app.register({
 
         initEvents: function() {
             $(document)
-                .on('click', '.tap-target button.understood', function() {
+
+                .on('template.registered', function(e, template) {
+                    if (template.id === "infos") {
+                        app.core.ui.applyTemplate(template.id, template.data);
+                    }
+                })
+
+                .on('click', '.tap-target button.understood', function(e) {
                     var tap = $(this).closest('.tap-target');
                     app.featureDiscovery.hideFeatureDiscovery(tap.attr('id'), true);
                 })

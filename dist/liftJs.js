@@ -51,7 +51,6 @@ var app = {
             app.core.ui.plugins.init();
             app.core.ui.init();
             app.ready();
-            app.ctrl.homeAction();
         });
     },
 
@@ -204,7 +203,7 @@ app.register({
 
                         var formData = app.core.utils.formToObject($(this));
 
-                        callableAction(formData);
+                        callableAction(formData,$(this));
                     })
 
                     // -------------------------------------------------------------
@@ -231,12 +230,6 @@ app.register({
                             } catch(e) {
 
                             }
-                        }
-                    })
-
-                    .on('template.registered', function(e, template) {
-                        if (template.id === "infos") {
-                            app.core.ui.applyTemplate(template.id, template.data);
                         }
                     })
 
@@ -347,47 +340,6 @@ app.register({
     }
 });
 
-app.register({
-    core: {
-        modal: {
-            initPlugins: function () {
-                app.core.ui.plugins.initModal();
-            },
-
-            initEvents: function () {
-                $(document)
-                    // -------------------------------------------------------------
-                    // CONFIRMATION MODAL BUTTONS
-                    // -------------------------------------------------------------
-
-                    .on('click', '#cancel-btn', function (e) {
-                        app.core.ui.modal.modal('close');
-                    })
-
-                    .on('click', '#save-btn', function (e) {
-                        app.core.ui.modal.modal('close');
-                    })
-
-                    ;
-            },
-        },
-        ui: {
-            // HANDLE APPLICATION MODALE
-            modal: null,
-            plugins: {
-
-                // ---------------------------------------------------------------------
-                // MATERIALIZECSS MODAL
-                // ---------------------------------------------------------------------
-
-                initModal: function () {
-                    app.core.ui.modal = $('#confirm-modal');
-                    app.core.ui.modal.modal();
-                }
-            }
-        }
-    }
-});
 app.register({
     core: {
         session: {
