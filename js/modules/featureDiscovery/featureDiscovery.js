@@ -3,8 +3,8 @@ app.register({
 
         registerTemplates: function() {
 
-            app.core.ui.addTemplate('app', 'infos', 'js/modules/featureDiscovery/views/infos.html');
-            app.core.ui.addTemplate('content', 'settings', 'js/modules/featureDiscovery/views/settings.html');
+            app.core.ui.addTemplate('app', 'infos', app.config.liftJsPath+'js/modules/featureDiscovery/views/infos.html');
+            app.core.ui.addTemplate('content', 'settings', app.config.liftJsPath+'js/modules/featureDiscovery/views/settings.html');
 
         },
 
