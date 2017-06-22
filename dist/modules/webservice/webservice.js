@@ -165,7 +165,7 @@ app.register({
                 return (app.core.session.access_token !== null ? true : false);
             },
             updateTokenExpirationDate: function () {
-                var tokenExpirationDate = app.core.utils.parseApiDate();
+                var tokenExpirationDate = app.core.utils.parseDate();
                 tokenExpirationDate.setSeconds(tokenExpirationDate.getSeconds() + (parseInt(app.core.session.expires_in, 10)) - 60);
 
                 app.core.session.tokenExpirationDate = tokenExpirationDate;

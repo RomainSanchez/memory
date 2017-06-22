@@ -9,30 +9,50 @@ app.register({
 
                 .on('app.ready', function() {
                     app.ctrl.homeAction();
-                })
+                });
         },
         registerTemplates: function() {
-            app.core.ui.addTemplate('app', 'navbar', 'js/modules/baseUi/views/navbar.html');
-            app.core.ui.addTemplate('content', 'settings', 'js/modules/baseUi/views/settings.html');
+            app.core.ui.addTemplate('app', 'navbar', app.config.liftJsPath + 'js/modules/baseUi/views/navbar.html');
+            app.core.ui.addTemplate('content', 'settings', app.config.liftJsPath + 'js/modules/baseUi/views/settings.html');
         },
 
-        openModal: function(templateName, data) {
-            app.core.ctrl.render(templateName, data, false).then(function() {
-                $('.modal')
-                    .modal({
-                        dismissible: true,
-                        opacity: .5,
-                        inDuration: 300,
-                        outDuration: 200,
-                        startingTop: '4%',
-                        endingTop: '10%',
-                    })
-                    .modal('open');
-            });
+        openModal: function(selector, templateName, data, options) {
+            var defaults = {
+                dismissible: true,
+                opacity: .5,
+                inDuration: 300,
+                outDuration: 200,
+                startingTop: '4%',
+                endingTop: '10%',
+            };
+
+            options = $.extend({}, defaults, options);
+
+            var open = function() {
+                var modal = $(selector + '.modal');
+
+                modal.modal(options);
+
+                if (!modal.hasClass('open')) {
+                    $(document).trigger('modal.open');
+                    modal.modal('open');
+                }
+            }
+
+            if ($(selector + '.modal').length == 0) {
+                app.core.ctrl.render(templateName, data, false).then(open);
+            } else {
+                open();
+            }
         },
 
         closeModal: function() {
-            $('.modal').modal('close');
+            var modal = $('.modal');
+
+            if (modal.hasClass('open')) {
+                modal.modal('close');
+                $('.modal').remove();
+            }
         },
     }
 });
