@@ -17,7 +17,7 @@ app.register({
             app.core.ui.addTemplate('content', 'settings', app.config.liftJsPath+'js/modules/baseUi/views/settings.html');
         },
 
-        openModal: function(templateName, data, options) {
+        openModal: function(selector, templateName, data, options) {
             var defaults = {
                 dismissible: true,
                 opacity: .5,
@@ -30,7 +30,7 @@ app.register({
             options = $.extend({}, defaults, options);
 
             var open = function() {
-              var modal = $('.modal');
+              var modal = $(selector+'.modal');
 
               modal.modal(options);
 
@@ -39,7 +39,7 @@ app.register({
               }
             }
 
-            if($('.modal').length == 0) {
+            if($(selector+'.modal').length == 0) {
                 app.core.ctrl.render(templateName, data, false).then(open);
             } else {
                 open();
