@@ -8,7 +8,7 @@ app.register({
     ctrl: {
         states: {
             settings: {
-                path: "settings",
+                path: "/settings",
                 title: "Paramètres"
             }
         },

@@ -7,7 +7,7 @@ app.register({
 
         states: {
             home: {
-                path: "",
+                path: "/",
                 title: app.config.applicationName
             }
         },

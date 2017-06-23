@@ -85,7 +85,7 @@ app.register({
 
         states: {
             home: {
-                path: "",
+                path: "/",
                 title: app.config.applicationName
             }
         },
@@ -258,7 +258,7 @@ app.register({
                 // RECURSION OVER APPLICATION COMPONENTS
                 Object.keys(component).forEach(function(key) {
                     var c = component[key];
-
+                    
                     if (isDefined(c) && c && c.hasOwnProperty('initEvents')) {
                         c.initEvents();
                     } else if (c && typeof c === "object") {
@@ -272,6 +272,7 @@ app.register({
 
 app.register({
     core: {
+
         history: {
 
             // HOLDS CURRENT VIEW STATE
@@ -309,11 +310,15 @@ app.register({
                 }
             },
 
-            readUrl: function() {
-                // WIP
+            getCurrentUri: function() {
                 var uri = window.location.pathname;
+                return uri;
+            },
 
-                console.info(app.config.appUriPrefix + uri);
+            findState: function(uri) {
+                $.each(app.ctrl.states, function(i, state) {
+                    console.info(uri, i, state);
+                });
             },
 
             // ---------------------------------------------------------------------
@@ -332,8 +337,6 @@ app.register({
                         if (state && !app.core.history.disableBack) {
                             $('#app').html(state.content);
                             $(document).trigger('history.popedstate');
-                        } else {
-                            console.info('popstate', app.core.history.disableBack, state);
                         }
                     });
 
@@ -341,6 +344,11 @@ app.register({
                     .on('history.popedstate', function() {
                         app.core.ui.plugins.init();
                         $('.dropdown-button').dropdown('close');
+                    })
+
+                    .on('app.ready', function() {
+                        var currentUri = app.core.history.getCurrentUri();
+                        app.core.history.findState(currentUri);
                     });
             }
         }
@@ -416,7 +424,7 @@ app.register({
     ctrl: {
         states: {
             settings: {
-                path: "settings",
+                path: "/settings",
                 title: "Paramètres"
             }
         },

@@ -163,19 +163,19 @@ app.register({
 
         states: {
             login: {
-                path: "login",
+                path: "/login",
                 title: "Connexion"
             },
             showUserProfile: {
-                path: "profile",
+                path: "/profile",
                 title: "Profil"
             },
             editUserProfile: {
-                path: "profile/edit",
+                path: "/profile/edit",
                 title: "Modifier mon profil"
             },
             editUserPassword: {
-                path: "password/edit",
+                path: "/password/edit",
                 title: "Modifier mon mot de passe"
             }
         },
