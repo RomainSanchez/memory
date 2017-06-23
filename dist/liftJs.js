@@ -356,7 +356,6 @@ app.register({
                 var foundState = null;
 
                 $.each(app.ctrl.states, function(i, state) {
-                    console.info(uri, app.config.appUriPrefix + state.path, state);
                     if (app.config.appUriPrefix + state.path === uri) {
                         foundState = state;
                         foundState.action = i + 'Action';
