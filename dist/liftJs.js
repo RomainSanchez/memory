@@ -168,7 +168,7 @@ app.register({
 
                         $(document).trigger('ctrl.beforego');
 
-                        var action = $(this).attr('data-go');
+                        var action = $(this).attr('data-go')+'Action';
                         var args = $(this).attr('data-go-args');
 
                         var callableAction = app.ctrl[action];
@@ -195,15 +195,13 @@ app.register({
                         if ($(this).attr('data-ws')) {
                             callableAction = app.ws[$(this).attr('data-ws')];
                         } else if ($(this).attr('data-ctrl')) {
-                            callableAction = app.ctrl[$(this).attr('data-ctrl')];
+                            callableAction = app.ctrl[$(this).attr('data-ctrl')+'Action'];
                         } else {
                             app.core.ui.toast("Mauvais callable de traitement de formulaire", "error");
                             return;
                         }
 
-                        var formData = app.core.utils.formToObject($(this));
-
-                        callableAction(formData,$(this));
+                        callableAction(app.core.utils.formToObject($(this)),$(this));
                     })
 
                     // -------------------------------------------------------------
@@ -258,7 +256,7 @@ app.register({
                 // RECURSION OVER APPLICATION COMPONENTS
                 Object.keys(component).forEach(function(key) {
                     var c = component[key];
-                    
+
                     if (isDefined(c) && c && c.hasOwnProperty('initEvents')) {
                         c.initEvents();
                     } else if (c && typeof c === "object") {
@@ -310,16 +308,7 @@ app.register({
                 }
             },
 
-            getCurrentUri: function() {
-                var uri = window.location.pathname;
-                return uri;
-            },
 
-            findState: function(uri) {
-                $.each(app.ctrl.states, function(i, state) {
-                    console.info(uri, i, state);
-                });
-            },
 
             // ---------------------------------------------------------------------
             // INIT EVENTS (CALLED BY APP CORE EVENTS)
@@ -344,11 +333,52 @@ app.register({
                     .on('history.popedstate', function() {
                         app.core.ui.plugins.init();
                         $('.dropdown-button').dropdown('close');
-                    })
+                    });
+            }
+        }
+    }
+});
+
+app.register({
+    core: {
+        routing: {
+            getCurrentUri: function() {
+                var uri = window.location.pathname;
+                if (app.config.appUriPrefix.match(/^\?/)) {
+                    var uri = window.location.search;
+                } else if (app.config.appUriPrefix.match(/^\#/)) {
+                    var uri = window.location.hash;
+                }
+                return uri;
+            },
+
+            findState: function(uri) {
+                var foundState = null;
+
+                $.each(app.ctrl.states, function(i, state) {
+                    console.info(uri, app.config.appUriPrefix + state.path, state);
+                    if (app.config.appUriPrefix + state.path === uri) {
+                        foundState = state;
+                        foundState.action = i + 'Action';
+                    }
+                });
+
+                return foundState;
+            },
+
+            initEvents: function() {
+
+                $(document)
 
                     .on('app.ready', function() {
-                        var currentUri = app.core.history.getCurrentUri();
-                        app.core.history.findState(currentUri);
+                        var currentUri = app.core.routing.getCurrentUri();
+                        var state = app.core.routing.findState(currentUri);
+
+
+                        if (state) {
+                            var callable = app.ctrl[state.action];
+                            callable();
+                        }
                     });
             }
         }
@@ -429,7 +459,7 @@ app.register({
             }
         },
 
-        showSettings: function () {
+        settingsAction: function () {
             app.core.history.currentCallable = app.ctrl.showSettings;
             app.core.ctrl.go('settings').then(function () {
                 try {

@@ -143,7 +143,7 @@ app.register({
                         });
                     }, function () {
                         if (app.core.history.currentState.path !== app.ctrl.states.login.path)
-                            app.ctrl.login();
+                            app.ctrl.loginAction();
                     });
 
                 return defer.promise();

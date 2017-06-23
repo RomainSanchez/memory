@@ -24,7 +24,7 @@ app.register({
 
                         $(document).trigger('ctrl.beforego');
 
-                        var action = $(this).attr('data-go');
+                        var action = $(this).attr('data-go')+'Action';
                         var args = $(this).attr('data-go-args');
 
                         var callableAction = app.ctrl[action];
@@ -51,15 +51,13 @@ app.register({
                         if ($(this).attr('data-ws')) {
                             callableAction = app.ws[$(this).attr('data-ws')];
                         } else if ($(this).attr('data-ctrl')) {
-                            callableAction = app.ctrl[$(this).attr('data-ctrl')];
+                            callableAction = app.ctrl[$(this).attr('data-ctrl')+'Action'];
                         } else {
                             app.core.ui.toast("Mauvais callable de traitement de formulaire", "error");
                             return;
                         }
 
-                        var formData = app.core.utils.formToObject($(this));
-
-                        callableAction(formData,$(this));
+                        callableAction(app.core.utils.formToObject($(this)),$(this));
                     })
 
                     // -------------------------------------------------------------
@@ -114,7 +112,7 @@ app.register({
                 // RECURSION OVER APPLICATION COMPONENTS
                 Object.keys(component).forEach(function(key) {
                     var c = component[key];
-                    
+
                     if (isDefined(c) && c && c.hasOwnProperty('initEvents')) {
                         c.initEvents();
                     } else if (c && typeof c === "object") {
