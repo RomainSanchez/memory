@@ -36,6 +36,7 @@ app.register({
                 if (!modal.hasClass('open')) {
                     $(document).trigger('modal.open');
                     modal.modal('open');
+                    $(document).trigger('modal.opened');
                 }
             }
 
@@ -46,12 +47,13 @@ app.register({
             }
         },
 
-        closeModal: function() {
-            var modal = $('.modal');
+        closeModal: function(selector) {
+            var modal = $(selector + '.modal');
 
             if (modal.hasClass('open')) {
+                $(document).trigger('modal.close')
                 modal.modal('close');
-                $('.modal').remove();
+                modal.remove();
             }
         },
     }
