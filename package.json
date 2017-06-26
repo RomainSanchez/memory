@@ -1,5 +1,5 @@
 {
-  "name": "front-online-choice",
+  "name": "LiftJS",
   "version": "0.4.2",
   "description": "",
   "main": "index.php",
@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/libre-informatique/front-online-choice"
+    "url": "https://github.com/libre-informatique/LiftJS"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Vivien FRASCA<vivien.frasca@libre-informatique.fr>",
+  "license": "LGPL",
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",

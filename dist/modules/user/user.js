@@ -10,7 +10,7 @@ app.register({
                         app.user.ui.updateProfileName();
                         app.ctrl.showEvents();
                     } else {
-                        app.ctrl.login();
+                        app.ctrl.loginAction();
                         $('#app').removeClass('loggedIn');
                     }
                 })
@@ -197,7 +197,7 @@ app.register({
 
             app.ws.userLogout().always(function () {
                 $(document).trigger('user.logged.out');
-                app.ctrl.login();
+                app.ctrl.loginAction();
             });
         },
 
@@ -212,7 +212,7 @@ app.register({
                     });
                 });
             } else {
-                app.ctrl.login();
+                app.ctrl.loginAction();
             }
         },
 
@@ -232,7 +232,7 @@ app.register({
                     });
                 });
             } else {
-                app.ctrl.login();
+                app.ctrl.loginAction();
             }
         },
 
@@ -252,7 +252,7 @@ app.register({
                     });
                 });
             } else {
-                app.ctrl.login();
+                app.ctrl.loginAction();
             }
         },
 
@@ -266,7 +266,7 @@ app.register({
                     form.find('input[type="password"]').addClass('invalid');
                 }
             } else {
-                app.ctrl.login();
+                app.ctrl.loginAction();
             }
         },
 
@@ -274,9 +274,9 @@ app.register({
         // OVERRIDES
         // ---------------------------------------------------------------------
 
-        showSettings: function () {
+        settingsAction: function () {
             if (app.core.session.user) {
-                app.core.history.currentCallable = app.ctrl.showSettings;
+                app.core.history.currentCallable = app.ctrl.settingsAction;
                 app.ws.getUser(app.core.session.user.id).then(function () {
                     app.core.ctrl.go('settings').then(function () {
                         try {
@@ -288,7 +288,7 @@ app.register({
                     });
                 });
             } else {
-                app.ctrl.login();
+                app.ctrl.loginAction();
             }
         },
 
@@ -302,7 +302,7 @@ app.register({
                 app.ctrl.showEvents();
                 app.core.ui.toast("Paramètres enregistrés", "success");
             } else {
-                app.ctrl.login();
+                app.ctrl.loginAction();
             }
         }
     },

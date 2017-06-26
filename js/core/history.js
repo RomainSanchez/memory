@@ -38,16 +38,7 @@ app.register({
                 }
             },
 
-            getCurrentUri: function() {
-                var uri = window.location.pathname;
-                return uri;
-            },
 
-            findState: function(uri) {
-                $.each(app.ctrl.states, function(i, state) {
-                    console.info(uri, i, state);
-                });
-            },
 
             // ---------------------------------------------------------------------
             // INIT EVENTS (CALLED BY APP CORE EVENTS)
@@ -72,11 +63,6 @@ app.register({
                     .on('history.popedstate', function() {
                         app.core.ui.plugins.init();
                         $('.dropdown-button').dropdown('close');
-                    })
-
-                    .on('app.ready', function() {
-                        var currentUri = app.core.history.getCurrentUri();
-                        app.core.history.findState(currentUri);
                     });
             }
         }

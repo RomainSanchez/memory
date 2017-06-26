@@ -13,7 +13,7 @@ app.register({
             }
         },
 
-        showSettings: function () {
+        settingsAction: function () {
             app.core.history.currentCallable = app.ctrl.showSettings;
             app.core.ctrl.go('settings').then(function () {
                 try {
