@@ -380,6 +380,7 @@ $colors: (
 
 // Color Classes
 @each $color_name, $color in $colors {
+
     @each $color_type, $color_value in $color{
         @if $color_type == "base" {
             .#{$color_name} {
@@ -388,6 +389,23 @@ $colors: (
 
             .#{$color_name}-text {
                 color: $color_value !important;
+            }
+
+            .btn {
+                &.#{$color_name} {
+                    background-color: #{$color_value} !important;
+                }
+            }
+        }
+
+
+        @if $color_type == "lighten-2" {
+            .btn {
+                &.#{$color_name} {
+                    &:hover {
+                        background-color:#{$color_value} !important;
+                    }
+                }
             }
         }
 
