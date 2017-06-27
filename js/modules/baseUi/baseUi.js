@@ -31,11 +31,9 @@ app.register({
             var open = function() {
                 var modal = $(selector + '.modal');
 
-                modal.modal(options);
-
                 if (!modal.hasClass('open')) {
                     $(document).trigger('modal.open');
-                    modal.modal('open');
+                    modal.modal('open', options);
                     $(document).trigger('modal.opened');
                 }
             }
