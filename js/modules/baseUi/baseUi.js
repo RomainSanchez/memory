@@ -32,9 +32,17 @@ app.register({
                 var modal = $(selector + '.modal');
 
                 if (!modal.hasClass('open')) {
-                    $(document).trigger('modal.open');
+                    $(document).trigger({
+                        type: 'modal.open',
+                        modal: modal
+                    });
+
                     modal.modal('open', options);
-                    $(document).trigger('modal.opened');
+
+                    $(document).trigger({
+                        type: 'modal.opened',
+                        modal: modal
+                    });
                 }
             }
 
@@ -49,7 +57,11 @@ app.register({
             var modal = $(selector + '.modal');
 
             if (modal.hasClass('open')) {
-                $(document).trigger('modal.close')
+                $(document).trigger({
+                    type: 'modal.close',
+                    modal: modal
+                });
+                
                 modal.modal('close');
                 modal.remove();
             }
