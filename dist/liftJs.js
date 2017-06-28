@@ -14,9 +14,6 @@ var app = {
     // -------------------------------------------------------------------------
 
     init: function() {
-
-        // app.core.ui.displayContentLoading(true);
-
         var host = null;
 
         // MANAGE INSTANCE HOST URL
@@ -26,11 +23,10 @@ var app = {
         } else {
             var protocol = location.protocol;
             var slashes = protocol.concat("//");
-            host = slashes.concat(window.location.hostname);
+            host = slashes.concat(window.location.host);
         }
 
         // GET APP PARAMETERS
-
         $.get(host + (app.config.parametersPath ? app.config.parametersPath : '/data/parameters.json'), function(params) {
             app.config = params;
             app.core.utils.init();
