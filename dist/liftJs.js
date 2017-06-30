@@ -836,7 +836,7 @@ app.register({
                 // -----------------------------------------------------------------
 
                 Handlebars.registerHelper('render', function(name,data) {
-                  app.core.ui.renderTemplate(name, data);
+                  return app.core.ui.renderTemplate(name, data);
                 });
 
                 // -----------------------------------------------------------------
