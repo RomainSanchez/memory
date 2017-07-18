@@ -365,12 +365,15 @@ app.register({
 
                 $(document)
 
-                    .on('app.ready', function() {
+                    .on('app.ready', function(e) {
                         var currentUri = app.core.routing.getCurrentUri();
                         var state = app.core.routing.findState(currentUri);
 
-
                         if (state) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+
                             var callable = app.ctrl[state.action];
                             callable();
                         }
