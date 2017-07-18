@@ -63,7 +63,7 @@ Include LiftJS third party libraries in your document `body` (if you already use
 
 ```html
 <script src="LiftJS/js/libs/jquery-3.2.1.min.js"></script>
-<script src="LiftJS/js/libs/handlebars-v4.0.5.js"></script>
+<script src="LiftJS/js/libs/handlebars.min.js"></script>
 <script src="LiftJS/js/libs/materialize.min.js"></script>
 <script src="LiftJS/js/libs/moment-with-locales.min.js"></script>
 ```
