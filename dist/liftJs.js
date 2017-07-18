@@ -546,8 +546,8 @@ app.register({
                     if (depth > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
                         return;
 
-                    // RECURSION OVER APPLICATION COMPONENTS
                     if (typeof component === Object) {
+                        // RECURSION OVER APPLICATION COMPONENTS
                         Object.keys(component).forEach(function(key) {
                             var c = component[key];
                             if (c && c.hasOwnProperty('initPlugins')) {
@@ -585,15 +585,19 @@ app.register({
                 if (depth > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
                     return;
 
-                // RECURSION OVER APPLICATION COMPONENTS
-                Object.keys(component).forEach(function(key) {
-                    var c = component[key];
-                    if (c && c.hasOwnProperty('registerTemplates')) {
-                        c.registerTemplates();
-                    } else if (c && typeof c === "object") {
-                        app.core.ui.registerModulesTemplates(c, depth + 1);
-                    }
-                });
+                if (typeof component === Object) {
+                    // RECURSION OVER APPLICATION COMPONENTS
+                    Object.keys(component).forEach(function(key) {
+                        var c = component[key];
+                        if (c !== null) {
+                            if (c && c.hasOwnProperty('registerTemplates')) {
+                                c.registerTemplates();
+                            } else if (typeof c === "object") {
+                                app.core.ui.registerModulesTemplates(c, depth + 1);
+                            }
+                        }
+                    });
+                }
             },
 
             // -------------------------------------------------------------------------
