@@ -365,12 +365,15 @@ app.register({
 
                 $(document)
 
-                    .on('app.ready', function() {
+                    .on('app.ready', function(e) {
                         var currentUri = app.core.routing.getCurrentUri();
                         var state = app.core.routing.findState(currentUri);
 
-
                         if (state) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+
                             var callable = app.ctrl[state.action];
                             callable();
                         }
@@ -546,8 +549,8 @@ app.register({
                     if (depth > 3) // LIMIT INIT SEARCH RECURSION TO 4 LEVEL
                         return;
 
-                    // RECURSION OVER APPLICATION COMPONENTS
                     if (typeof component === Object) {
+                        // RECURSION OVER APPLICATION COMPONENTS
                         Object.keys(component).forEach(function(key) {
                             var c = component[key];
                             if (c && c.hasOwnProperty('initPlugins')) {
@@ -588,10 +591,12 @@ app.register({
                 // RECURSION OVER APPLICATION COMPONENTS
                 Object.keys(component).forEach(function(key) {
                     var c = component[key];
-                    if (c && c.hasOwnProperty('registerTemplates')) {
-                        c.registerTemplates();
-                    } else if (c && typeof c === "object") {
-                        app.core.ui.registerModulesTemplates(c, depth + 1);
+                    if (c !== null) {
+                        if (c && c.hasOwnProperty('registerTemplates')) {
+                            c.registerTemplates();
+                        } else if (typeof c === "object") {
+                            app.core.ui.registerModulesTemplates(c, depth + 1);
+                        }
                     }
                 });
             },
