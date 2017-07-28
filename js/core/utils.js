@@ -68,8 +68,23 @@ app.register({
                 // RENDER TEMPLATE INSIDE ANOTHER ONE
                 // -----------------------------------------------------------------
 
-                Handlebars.registerHelper('render', function(name,data) {
-                  return app.core.ui.renderTemplate(name, data);
+                Handlebars.registerHelper('render', function() {
+                    //Remove handlebar context param
+                    var args = [];
+
+                    for (var i = 0; i < arguments.length - 1; i++) {
+                        args.push(arguments[i]);
+                    }
+
+                    //Wrap data in object
+                    if(isDefined(args[2])) {
+                        var object = {};
+
+                        object[args[2]] = args[1];
+                        args[1] = object;
+                    }
+
+                   return app.core.ui.renderTemplate(args[0], args[1]);
                 });
 
                 // -----------------------------------------------------------------
