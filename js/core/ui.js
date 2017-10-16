@@ -225,7 +225,11 @@ app.register({
             // -------------------------------------------------------------------------
 
             renderTemplate: function(name, data) {
-                if (undefined !== app.core.ui.templates[name]) {
+                if(data === undefined) {
+                    data = {};
+                }
+
+                if (app.core.ui.templates[name] !== undefined) {
                     var compiled = Handlebars.compile(app.core.ui.templates[name].data);
 
                     return compiled(data);
@@ -239,7 +243,7 @@ app.register({
             // -------------------------------------------------------------------------
 
             clearContent: function() {
-                $('#app div.content handlebars-template').html('');
+                $('#app div.content handlebars-template').html('').css('display', 'none');
                 $(document).trigger('content.cleared');
             },
 
@@ -248,14 +252,13 @@ app.register({
             // -------------------------------------------------------------------------
 
             displayContentLoading: function(show) {
-                if (!isDefined(show))
-                    show = true;
                 var loader = $('#contentLoader');
 
-                if (show === true)
-                    loader.show();
-                else
-                    loader.hide();
+                if (!isDefined(show)) {
+                    show = true;
+                }
+
+                show === true ? loader.show() : loader.hide();
             },
 
             // -------------------------------------------------------------------------
