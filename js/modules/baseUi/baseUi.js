@@ -46,7 +46,7 @@ app.register({
                 }
             }
 
-            if ($(selector + '.modal').length == 0) {
+            if ($(selector + ' .modal').length == 0) {
                 app.core.ctrl.render(templateName, data, false).then(open);
             } else {
                 open();
