@@ -387,10 +387,11 @@ app.register({
     core: {
         session: {
             initEvents: function () {
-                
+
             },
 
             start: function () {
+                app.core.sessionStorage.initEngine();
                 var currentSession = app.core.sessionStorage.get(app.config.clientSessionName);
 
                 if (currentSession === null) {
@@ -427,6 +428,15 @@ app.register({
         },
         sessionStorage: {
             engine: sessionStorage,
+            initEngine: function() {
+                if (localStorage.getItem(app.config.clientSessionName) !== null) {
+                    app.core.sessionStorage.engine = localStorage;
+                    sessionStorage.removeItem(app.config.clientSessionName);
+                } else {
+                    app.core.sessionStorage.engine = sessionStorage;
+                    localStorage.removeItem(app.config.clientSessionName);
+                }
+            },
             get: function (key) {
                 return app.core.sessionStorage.engine.getItem(key);
             },
@@ -703,7 +713,11 @@ app.register({
             // -------------------------------------------------------------------------
 
             renderTemplate: function(name, data) {
-                if (undefined !== app.core.ui.templates[name]) {
+                if(data === undefined) {
+                    data = {};
+                }
+
+                if (app.core.ui.templates[name] !== undefined) {
                     var compiled = Handlebars.compile(app.core.ui.templates[name].data);
 
                     return compiled(data);
@@ -717,7 +731,7 @@ app.register({
             // -------------------------------------------------------------------------
 
             clearContent: function() {
-                $('#app div.content handlebars-template').html('');
+                $('#app div.content handlebars-template').html('').css('display', 'none');
                 $(document).trigger('content.cleared');
             },
 
@@ -726,14 +740,13 @@ app.register({
             // -------------------------------------------------------------------------
 
             displayContentLoading: function(show) {
-                if (!isDefined(show))
-                    show = true;
                 var loader = $('#contentLoader');
 
-                if (show === true)
-                    loader.show();
-                else
-                    loader.hide();
+                if (!isDefined(show)) {
+                    show = true;
+                }
+
+                show === true ? loader.show() : loader.hide();
             },
 
             // -------------------------------------------------------------------------
@@ -840,8 +853,23 @@ app.register({
                 // RENDER TEMPLATE INSIDE ANOTHER ONE
                 // -----------------------------------------------------------------
 
-                Handlebars.registerHelper('render', function(name,data) {
-                  return app.core.ui.renderTemplate(name, data);
+                Handlebars.registerHelper('render', function() {
+                    //Remove handlebar context param
+                    var args = [];
+
+                    for (var i = 0; i < arguments.length - 1; i++) {
+                        args.push(arguments[i]);
+                    }
+
+                    //Wrap data in object
+                    if(isDefined(args[2])) {
+                        var object = {};
+
+                        object[args[2]] = args[1];
+                        args[1] = object;
+                    }
+
+                   return app.core.ui.renderTemplate(args[0], args[1]);
                 });
 
                 // -----------------------------------------------------------------

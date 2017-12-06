@@ -45,7 +45,7 @@ app.register({
                     },
                     400: function (response, defer) {
                         if (app.config.debug) {
-                            app.core.ui.toast('Echec de la requêteé (' + response.responseJSON.code + '): ' + response.responseJSON.message, 'warning');
+                            app.core.ui.toast('Echec de la requête (' + response.responseJSON.code + '): ' + response.responseJSON.message, 'warning');
                         }
 
                         defer.reject();
@@ -142,7 +142,7 @@ app.register({
                             }
                         });
                     }, function () {
-                        if (app.core.history.currentState.path !== app.ctrl.states.login.path)
+                        if (app.core.history.currentState && app.core.history.currentState.path !== app.ctrl.states.login.path)
                             app.ctrl.loginAction();
                     });
 

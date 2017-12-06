@@ -2,10 +2,11 @@ app.register({
     core: {
         session: {
             initEvents: function () {
-                
+
             },
 
             start: function () {
+                app.core.sessionStorage.initEngine();
                 var currentSession = app.core.sessionStorage.get(app.config.clientSessionName);
 
                 if (currentSession === null) {
@@ -42,6 +43,15 @@ app.register({
         },
         sessionStorage: {
             engine: sessionStorage,
+            initEngine: function() {
+                if (localStorage.getItem(app.config.clientSessionName) !== null) {
+                    app.core.sessionStorage.engine = localStorage;
+                    sessionStorage.removeItem(app.config.clientSessionName);
+                } else {
+                    app.core.sessionStorage.engine = sessionStorage;
+                    localStorage.removeItem(app.config.clientSessionName);
+                }
+            },
             get: function (key) {
                 return app.core.sessionStorage.engine.getItem(key);
             },
