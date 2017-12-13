@@ -123,7 +123,9 @@ app.register({
                                 if (jqXHR.status === 204)
                                     response = "{}";
 
-                                if (typeof response !== 'object')
+                                var type = jqXHR.getResponseHeader('content-type');
+
+                                if (typeof response !== 'object' && type === 'application/json') 
                                     response = JSON.parse(response);
 
                                 callback(response, textStatus, jqXHR);
