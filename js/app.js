@@ -1,5 +1,9 @@
 // Déclaration de l'application
 let app = {
+    // Nombre de paires à valider
+    total: 18,
+    // Nombre de paires actuel
+    score: 0,
     // Cartes sélectionnées
     firstCard: undefined,
     secondCard: undefined,
@@ -90,9 +94,23 @@ let app = {
         app.secondCard === undefined;
     },
 
+    // Augmente le score quand une paire est validée
+    increaseScore: () => {
+        app.score++;
+
+        app.ui.updateScore();
+
+        // Partie gagnante
+        if(app.score == app.total) {
+            app.endGame();
+        }
+    },
+
     // Fin de partie
     endGame: () => {
+        alert('fini');
 
+        app.score = 0;
     },
 } 
 
