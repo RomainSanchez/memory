@@ -1,5 +1,28 @@
 // Manipulations de l'interface utilisateur
 app.ui = {
+    // Evénements de click
+    clickEvents: () => {
+        /* On attache les listeners directement au document
+         afin qu'il ne fonctionnent pas uniquement pour les éléments déjà présents dans le dom
+         */
+        $(document)
+            // Click du bouton "Démarrer"
+            .on('click', '#start-button', app.startGame)
+            // Click sur une carte
+            .on('click', '.card', app.handleSelection) 
+        ;
+    },
+
+    // Initialisation du tableau de jeux
+    initBoard: () => {
+        // Réinitialisation si ce n'est pas la première partie
+        $('#board').empty();
+        
+        // Insertion des cartes HTML dans le DOM
+        $.each(app.set, app.ui.addCard);
+        
+    },
+
     // Retournement d'une carte
     flipCard: (card) => {
         // Récupération de l'élément html correspondant à la carte dans le DOM
@@ -22,7 +45,7 @@ app.ui = {
         card.addClass('hidden');
     },
 
-    //Ajout d'une carte au tableau de jeu
+    // Ajout d'une carte au tableau de jeu
     addCard: (key, card) => {
         // Création des images
         let cover = $('<img>')
@@ -34,7 +57,7 @@ app.ui = {
             .addClass('card-image')
         ;
         // Création de la carte HTML
-        let htmlCard = $('<div>')
+        let htmlCard = $('<li>')
             .addClass('card')
             .addClass('hidden')
             .prop('id', card.name)
@@ -54,4 +77,9 @@ app.ui = {
             ;
         });
     },
+
+    // Mise à jour du score à l'écran
+    updateScore: () => {
+        $('#score').html(app.score);
+    }
 };
