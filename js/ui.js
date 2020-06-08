@@ -68,9 +68,9 @@ app.ui = {
         $('#board').append(htmlCard);
     },
 
-    // Désactive les événements de click sur la paire validée
-    disableSelection: () => {
-        $.each([app.firstCard, app.secondCard], (card) => {
+    // Désactive la paire validée
+    disablePair: () => {
+        $.each([app.firstCard, app.secondCard], (key, card) => {
             $(`#${card.name}`)
                 .css('border', '5px solid green')
                 .off('click')

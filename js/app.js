@@ -56,8 +56,8 @@ let app = {
     checkSelection: () => {
         // On compare les images des cartes car les noms sont toujours différents
         if(app.firstCard.image === app.secondCard.image) {
+            app.ui.disablePair();
             app.increaseScore();
-            //app.ui.disableSelection();
             app.resetSelection(true);
 
             return;
