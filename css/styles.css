@@ -1,0 +1,13 @@
+#board .card {
+  height: 130px;
+  width: 100px;
+}
+#board .card img {
+  height: 100%;
+  width: 100%;
+}
+#board .card img.card-image {
+  display: none;
+}
+
+/*# sourceMappingURL=styles.css.map */
