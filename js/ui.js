@@ -7,7 +7,7 @@ app.ui = {
          */
         $(document)
             // Click du bouton "Démarrer"
-            .on('click', '#start-button', app.startGame)
+            .on('click', '.start-button', app.startGame)
             // Click sur une carte
             .on('click', '.card', app.handleSelection) 
         ;
@@ -16,7 +16,7 @@ app.ui = {
     // Initialisation du tableau de jeux
     initBoard: () => {
         // Réinitialisation si ce n'est pas la première partie
-        $('#board').empty();
+        $('.board').empty();
         
         // Insertion des cartes HTML dans le DOM
         $.each(app.set, app.ui.addCard);
@@ -65,7 +65,7 @@ app.ui = {
             .append(img)
         ;
         // Insertion de la carte dans le tableau de jeu
-        $('#board').append(htmlCard);
+        $('.board').append(htmlCard);
     },
 
     // Désactive la paire validée
@@ -80,6 +80,6 @@ app.ui = {
 
     // Mise à jour du score à l'écran
     updateScore: () => {
-        $('#score').html(app.score);
+        $('.score').html(app.score);
     }
 };

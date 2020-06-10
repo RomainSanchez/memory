@@ -62,7 +62,7 @@ let app = {
 
             return;
         }
-
+        
         app.resetSelection(false);
     },
 
