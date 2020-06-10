@@ -1,13 +1,33 @@
-#board
-  .card
-    height: 130px
-    width: 100px
+$blue: #1976D2
+  
+#app
+  display: flex
+  flex-direction: column
+  align-items: center
 
-    img 
-      height: 100%
-      width: 100%
+  nav 
+    display: flex
+    align-items: center
+    justify-content: space-between
+    width: 100%
+    background: $blue
+    color: white
+  
+  .board
+    display: grid
+    grid-template-columns: repeat(6, 120px)
+    grid-gap: 20px
 
-      &.card-image
-        display: none
+    .card
+      list-style-type: none
+      height: 110px
+      width: 100px
+
+      img 
+        height: 100%
+        width: 100%
+
+        &.card-image
+          display: none
 
 
