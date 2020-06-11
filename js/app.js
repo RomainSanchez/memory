@@ -12,15 +12,29 @@ let app = {
     // Initialisation de l'application
     init: () => {
         app.ui.clickEvents();
+
+        $(document)
+            .on('timer:tick', (event, time) => {
+                app.ui.updateTime(time)
+            })
+            .on('timer:done', () => {
+                app.gameOver(false);
+            });
+
+        ;
     },
 
     // Lancement d'une partie
     startGame: () => {
+        console.log(app)
         // Récupération du jeu de cartes mélangé
         app.set = app.cards.getShuffledSet();
 
         // Initialisation du jeu de carte dans l'interface
-        app.ui.initBoard();  
+        app.ui.initBoard();
+
+        app.timer.start();
+
       
         // Lancement du timer de la partie
         setTimeout(() => {
@@ -81,21 +95,32 @@ let app = {
     increaseScore: () => {
         app.score++;
 
-        app.ui.updateScore();
+        app.ui.updateScore(app.score);
 
         // Partie gagnante
         if(app.score == app.total) {
-            app.endGame();
+            app.gameOver(true);
         }
     },
 
     // Fin de partie
-    endGame: () => {
-        alert('fini');
+    gameOver: (success) => {
+        if (success) {
+            app.timer.stop();
 
-        app.score = 0;
+            const time = app.timer.getTime();
+            alert(time);
+
+            return;
+        }
+
+
+        // persist time
+        alert(`${app.score} / ${app.total}`);
+
+        app.score = 0
     },
-} 
+};
 
 // Lancement de l'application
 $(document).ready(app.init);

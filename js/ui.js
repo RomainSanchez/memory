@@ -79,7 +79,12 @@ app.ui = {
     },
 
     // Mise à jour du score à l'écran
-    updateScore: () => {
-        $('.score').html(app.score);
+    updateScore: (score) => {
+        $('.score').html(score);
+    },
+
+    // Mise à jour du temps restant
+    updateTime: (time) => {
+        $('.timer').html(time);
     }
 };
