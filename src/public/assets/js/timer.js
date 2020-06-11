@@ -1,8 +1,8 @@
 // Compteur de temps
 app.timer = {
     interval: undefined,
-    countFrom: 30, // seconds
     count: undefined,
+    countFrom: 180, // seconds
 
     //Lancement et redémarrage du timer
     start: () => {
@@ -30,7 +30,7 @@ app.timer = {
     tick: () => {
       app.timer.count -= 1;
 
-      if (app.timer.count<= 0) {
+      if (app.timer.count <= 0) {
         app.timer.count = 0;
 
         clearInterval(app.timer.interval);

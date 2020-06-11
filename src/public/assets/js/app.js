@@ -11,16 +11,22 @@ let app = {
     secondCard: undefined,
     // Initialisation de l'application
     init: () => {
-        app.ui.clickEvents();
-
+        app.events();
+        app.ui.events();
         app.api.getBestScores();
+    },
 
+    // Attachment des listeners d'événements
+    events: () => {
         $(document)
             .on('timer:tick', (event, time) => {
                 app.ui.updateTime(time)
             })
             .on('timer:done', () => {
                 app.gameOver(false);
+            })
+            .on('api:done', (event, data) => {
+                app.ui.displayScores(data.scores);
             });
 
         ;
@@ -28,7 +34,6 @@ let app = {
 
     // Lancement d'une partie
     startGame: () => {
-        console.log(app)
         app.score = 0
         // Récupération du jeu de cartes mélangé
         app.set = app.cards.getShuffledSet();
@@ -37,12 +42,6 @@ let app = {
         app.ui.initBoard();
 
         app.timer.start();
-
-      
-        // Lancement du timer de la partie
-        setTimeout(() => {
-        //     endGame();
-        }, 50000);
     }, 
 
     // Gestion de la sélection d'une carte
@@ -121,7 +120,6 @@ let app = {
         }
 
 
-        // persist time
         alert(`${app.score} / ${app.total}`);
     },
 };

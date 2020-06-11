@@ -1,7 +1,7 @@
 // Manipulations de l'interface utilisateur
 app.ui = {
     // Evénements de click
-    clickEvents: () => {
+    events: () => {
         /* On attache les listeners directement au document
          afin qu'il ne fonctionnent pas uniquement pour les éléments déjà présents dans le dom
          */
@@ -21,28 +21,6 @@ app.ui = {
         // Insertion des cartes HTML dans le DOM
         $.each(app.set, app.ui.addCard);
         
-    },
-
-    // Retournement d'une carte
-    flipCard: (card) => {
-        // Récupération de l'élément html correspondant à la carte dans le DOM
-        card = $(`#${card.name}`);
-        // Récupération des images
-        let cover = card.find('.card-cover');
-        let image = card.find('.card-image');
-
-        // Returnement de la carte en fonction de son état actuel
-        if(card.hasClass('hidden')) {
-            cover.hide();
-            image.show();
-            card.removeClass('hidden');
-
-            return;
-        }
-
-        cover.show();
-        image.hide();
-        card.addClass('hidden');
     },
 
     // Ajout d'une carte au tableau de jeu
@@ -68,6 +46,28 @@ app.ui = {
         $('.board').append(htmlCard);
     },
 
+    // Retournement d'une carte
+    flipCard: (card) => {
+        // Récupération de l'élément html correspondant à la carte dans le DOM
+        card = $(`#${card.name}`);
+        // Récupération des images
+        let cover = card.find('.card-cover');
+        let image = card.find('.card-image');
+
+        // Returnement de la carte en fonction de son état actuel
+        if(card.hasClass('hidden')) {
+            cover.hide();
+            image.show();
+            card.removeClass('hidden');
+
+            return;
+        }
+
+        cover.show();
+        image.hide();
+        card.addClass('hidden');
+    },
+
     // Désactive la paire validée
     disablePair: () => {
         $.each([app.firstCard, app.secondCard], (key, card) => {
@@ -85,6 +85,29 @@ app.ui = {
 
     // Mise à jour du temps restant
     updateTime: (time) => {
-        $('.timer').html(time);
+        $('.timer').html(app.ui.secondsToTime(time));
+    },
+
+    // Affichage des meilleurs scores
+    displayScores: (scores) => {
+        const list = $('.scores');
+        
+        list.empty();
+
+        $.each(scores, (key, score) => {
+            const ellapsedTime = app.timer.countFrom - score;
+
+            list.append(app.ui.secondsToTime(ellapsedTime));
+        });
+    },
+
+    // Convertit le score (temps restant) en minutes et secondes écoulées
+    secondsToTime: (time) => {
+        const minutes = Math.floor(time % 3600 / 60).toString().padStart(2,'0');
+        
+        const seconds = Math.floor(time % 60).toString().padStart(2,'0');
+
+        return `${minutes}m ${seconds}s`;
+
     }
 };
