@@ -1,37 +1,14 @@
-# Symfony 5 docker containers
-
-A Proof-of-concept of a running Symfony 5 application inside containers
+# Lancement du projet
 
 ```
-git clone git@gitlab.com:martinpham/symfony-5-docker.git
-
-cd symfony-5-docker
-
-cd docker
-
 docker-compose up
-```
 
-## Compose
+docker-compose run php-fpm composer install
 
-### Database (MariaDB)
-
-...
-
-### PHP (PHP-FPM)
-
-Composer is included
+docker-compose run php-fpm bin/console doctrine:migrations:migrate
 
 ```
-docker-compose run php-fpm composer 
-```
+Visiter localhost
 
-To run fixtures
 
-```
-docker-compose run php-fpm bin/console doctrine:fixtures:load
-```
-
-### Webserver (Nginx)
-
-...
+Pour tricher commenter la ligne 29 de src/public/assets/js/cards.js ;-)

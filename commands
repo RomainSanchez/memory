@@ -1,6 +1,0 @@
-docker-compose up
-
-docker-compose run php-fpm composer install
-
-docker-compose run php-fpm bin/console doctrine:migrations:migrate
-
