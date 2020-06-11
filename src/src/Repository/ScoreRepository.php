@@ -31,7 +31,7 @@ class ScoreRepository extends ServiceEntityRepository
     {
         // Le QueryBuilder permet de faire des requêtes personnalisées via Doctrine
         return $this->createQueryBuilder('score')
-            ->orderBy('score.time', 'ASC')
+            ->orderBy('score.time', 'DESC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()

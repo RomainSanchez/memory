@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
 }
 #app nav {
   display: flex;
@@ -9,23 +10,63 @@
   justify-content: space-between;
   width: 100%;
   background: #1976D2;
-  color: white;
+  font-size: 1.6em;
+  padding: 20px;
 }
-#app .board {
+#app nav .score {
+  display: none;
+}
+#app nav .start-button {
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
+  border: none;
+  background-color: #FF9800;
+  color: inherit;
+  font-size: 0.8em;
+}
+#app .columns {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+#app .columns .high-scores {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  flex-grow: 1;
+  color: #1976D2;
+  font-size: 1.6em;
+  font-weight: bold;
+}
+#app .columns .high-scores .scores {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 0;
+}
+#app .columns .high-scores .scores li {
+  list-style-type: none;
+}
+#app .columns .board {
+  flex-grow: 1;
   display: grid;
   grid-template-columns: repeat(6, 120px);
   grid-gap: 20px;
 }
-#app .board .card {
+#app .columns .board .card {
   list-style-type: none;
   height: 110px;
   width: 100px;
 }
-#app .board .card img {
+#app .columns .board .card img {
   height: 100%;
   width: 100%;
 }
-#app .board .card img.card-image {
+#app .columns .board .card img.card-image {
   display: none;
 }
 

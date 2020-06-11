@@ -2,7 +2,7 @@
 app.timer = {
     interval: undefined,
     count: undefined,
-    countFrom: 180, // seconds
+    countFrom: 240, // seconds
 
     //Lancement et redémarrage du timer
     start: () => {
@@ -34,6 +34,7 @@ app.timer = {
         app.timer.count = 0;
 
         clearInterval(app.timer.interval);
+
         $(document).trigger('timer:done');
        }
 

@@ -49,8 +49,8 @@ app.cards = {
 
     // Mélange aléatoire des cartes
     shuffle: (pairs) => {
-        // pairs.sort(() => {
-        //     return 0.5 - Math.random() 
-        // });
+        pairs.sort(() => {
+            return 0.5 - Math.random() 
+        });
     }
 };

@@ -80,12 +80,16 @@ app.ui = {
 
     // Mise à jour du score à l'écran
     updateScore: (score) => {
-        $('.score').html(score);
+        $('.score span').html(score);
+
+        if(score == 1) {
+            $('.score').show();
+        }
     },
 
     // Mise à jour du temps restant
     updateTime: (time) => {
-        $('.timer').html(app.ui.secondsToTime(time));
+        $('.timer span').html(app.ui.secondsToTime(time));
     },
 
     // Affichage des meilleurs scores
@@ -97,7 +101,12 @@ app.ui = {
         $.each(scores, (key, score) => {
             const ellapsedTime = app.timer.countFrom - score;
 
-            list.append(app.ui.secondsToTime(ellapsedTime));
+            const htmlScore = $('<li>')
+                .addClass('high-score')
+                .html(app.ui.secondsToTime(ellapsedTime))
+            ;
+
+            list.append(htmlScore);
         });
     },
 

@@ -12,12 +12,19 @@
         <nav role="navigation">
             <p class="title">Memory</p>
             <button class="start-button" class="btn-large waves-effect waves-light orange">Démarrer</button>
-            <p class="score"><span class=""></span></p>
-            <p class="timer"></p>
+            <p class="score">Score: <span class=""></span>/18 paires</p>
+            <p class="timer">Temps restant: <span></span></p>
         </nav>
+        <div class="columns">
+            <!-- MEILLEURS SCORES -->
+            <div class="high-scores">
+                <p>Meilleurs temps</p>
+                <ul class="scores"></ul>  
+            </div>
 
-        <!-- PLATEAU DE JEU-->
-        <ul class="board"></ul>
+            <!-- PLATEAU DE JEU-->
+            <ul class="board"></ul>
+        </div>
     </div>
 {% endblock %}
 

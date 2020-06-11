@@ -34,7 +34,8 @@ let app = {
 
     // Lancement d'une partie
     startGame: () => {
-        app.score = 0
+        app.ui.updateScore(0);
+        
         // Récupération du jeu de cartes mélangé
         app.set = app.cards.getShuffledSet();
 
@@ -84,9 +85,15 @@ let app = {
 
     // Réinitialise la sélection
     resetSelection: (valid) => {
+        const first = app.firstCard;
+        const second = app.secondCard
+
         if (!valid) {
-            app.ui.flipCard(app.firstCard);
-            app.ui.flipCard(app.secondCard);
+            // Laisser le temps au jouer de voir la deuxieme carte sélectionnée avant de retourner
+            setTimeout(function(a, b) {
+                app.ui.flipCard(first);
+                app.ui.flipCard(second);
+            }, 1000);
         }
         
         app.firstCard = undefined;
@@ -114,13 +121,13 @@ let app = {
             
             app.api.saveScore(time);
             
-            alert(time);
+            alert(`Bravo vous avez gagné!`);
 
             return;
         }
 
 
-        alert(`${app.score} / ${app.total}`);
+        alert(`Perdu ! Vous avez trouvé ${app.score} paires sur  ${app.total}`);
     },
 };
 
