@@ -13,6 +13,8 @@ let app = {
     init: () => {
         app.ui.clickEvents();
 
+        app.api.getBestScores();
+
         $(document)
             .on('timer:tick', (event, time) => {
                 app.ui.updateTime(time)
@@ -27,6 +29,7 @@ let app = {
     // Lancement d'une partie
     startGame: () => {
         console.log(app)
+        app.score = 0
         // Récupération du jeu de cartes mélangé
         app.set = app.cards.getShuffledSet();
 
@@ -109,6 +112,9 @@ let app = {
             app.timer.stop();
 
             const time = app.timer.getTime();
+            
+            app.api.saveScore(time);
+            
             alert(time);
 
             return;
@@ -117,8 +123,6 @@ let app = {
 
         // persist time
         alert(`${app.score} / ${app.total}`);
-
-        app.score = 0
     },
 };
 
