@@ -53,4 +53,4 @@ app.cards = {
         //     return 0.5 - Math.random() 
         // });
     }
-}
+};
