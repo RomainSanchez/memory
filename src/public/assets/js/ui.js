@@ -9,7 +9,7 @@ app.ui = {
             // Click du bouton "Démarrer"
             .on('click', '.start-button', app.startGame)
             // Click sur une carte
-            .on('click', '.card', app.handleSelection) 
+            .on('click', '.card', app.handleSelection)
         ;
     },
 
@@ -49,11 +49,11 @@ app.ui = {
     addCard: (key, card) => {
         // Création des images
         let cover = $('<img>')
-            .attr('src', 'img/cover.jpg')
+            .attr('src', 'assets/img/cover.jpg')
             .addClass('card-cover')
         ;
         let img = $('<img>')
-            .attr('src', `img/${card.image}`)
+            .attr('src', `assets/img/${card.image}`)
             .addClass('card-image')
         ;
         // Création de la carte HTML
