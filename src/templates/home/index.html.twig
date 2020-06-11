@@ -1,13 +1,28 @@
 {% extends "base.html.twig" %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}" /> 
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script> 
+{% endblock %}
+
 {% block body %}
-    <h1>Post</h1>
-    <ul>
-        {% for post in posts %}
-            <li>
-                <b>{{post.name}}</b>
-                <p>{{post.content}}</p>
-            </li>
-        {% endfor %}
-    </ul>
+    <div id="app">
+        <!-- MENU-->
+        <nav role="navigation">
+            <p class="title">Memory</p>
+            <button class="start-button" class="btn-large waves-effect waves-light orange">Démarrer</button>
+            <p class="score"><span class=""></span></p>
+            <p class="timer"></p>
+        </nav>
+
+        <!-- PLATEAU DE JEU-->
+        <ul class="board"></ul>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <script src="{{ asset('assets/js/ui.js') }}"></script>
+    <script src="{{ asset('assets/js/timer.js') }}"></script>
+    <script src="{{ asset('assets/js/cards.js') }}"></script>
 {% endblock %}

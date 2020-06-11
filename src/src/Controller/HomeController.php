@@ -13,12 +13,14 @@ class HomeController extends AbstractController
      * @Route("/", name="")
      * @Template
      */
-    public function index(PostRepository $postRepository)
+    public function index(
+        //PostRepository $postRepository
+        )
     {
-        $posts = $postRepository->findAll();
+        // $posts = $postRepository->findAll();
 
-        return [
-            'posts' => $posts
-        ];
+        // return [
+        //     'posts' => $posts
+        // ];
     }
 }
