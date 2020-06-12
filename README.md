@@ -1,6 +1,8 @@
 # Lancement du projet
 
 ```
+cd memory/docker
+
 docker-compose up
 
 docker-compose run php-fpm composer install
