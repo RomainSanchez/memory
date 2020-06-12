@@ -1,0 +1,50 @@
+Au debut cartes faces cachées
+
+placement des cartes aléatoire
+
+Le joueur clique sur deux cartes
+
+si cartes identiques paire validée sinon cartes de retour cachées
+
+rejoue tant qu'il reste du temps
+
+temps limité
+
+compteur de temps et barre de progression
+
+Si toutes les paires sont validées avant le temps = partie gagnée
+
+sauvegarde du temps pour chaque partie réussie
+
+Affichage des meilleurs temps
+
+DONNEES:
+- cartes
+- cartes sélectionnées
+- limite de temps
+- progression
+- temps (score) d'une partie réussie
+
+REGLES METIER:
+- Les cartes sont cachées en début de partie
+- Le placement des cartes est aléatoire
+- Le joueur ne peut sélectionner que deux cartes
+- Deux cartes sélectionnées identiques valident la paire
+- Deux cartes sélectionnés non identiques donnent lieu à une nouvelle sélection
+- Si toutes les paires sont validées la partie est gagnée
+- Les temps de partie doivent être sauvegardés
+
+FONTIONNALITES:
+- Affichage des cartes
+- Mélange aléatoire des cartes
+- Lancement d'une partie
+- Retournement de carte au click
+- Gestion de la sélection
+- Vérification de la correspondance des cartes
+- Calcul de la progression
+- Affichage de la progression
+- Partie limitée dans le temps
+- Affichage du temps restant
+- Affichage des meilleurs temps
+- Persistence des temps
+- Parties consécutives
